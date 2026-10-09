@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 """Lokale Plattform für Probeprüfungen (nur Python-Standardbibliothek).
 
-Start:    python3 server.py [port] [--no-browser]   → http://127.0.0.1:8765
+Start:    python3 server.py [port] [--no-browser] [--lan]   → http://127.0.0.1:8765
 Prüfen:   python3 server.py --check                 → validiert alle Dateien in exams/
 """
+import ipaddress
 import json
 import random
 import re
+import secrets
+import socket
 import sys
 import threading
 import webbrowser
 from datetime import datetime
+from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
@@ -25,6 +29,10 @@ VIRTUAL = {"_zufall", "_fehler", "_training"}
 SOURCES = ("all", "wrong", "new")
 SAFE_ID = re.compile(r"^[A-Za-z0-9_.-]+$")
 LOCK = threading.Lock()
+PORT = DEFAULT_PORT
+LAN_KEY_FILE = BASE / ".lan-key"
+LAN = {"server": None, "ip": None}
+LAN_LOCK = threading.Lock()
 
 
 class ApiError(Exception):
@@ -441,6 +449,73 @@ def exam_list():
     }
 
 
+# ---------------------------------------------------------------- Zugriff aus dem lokalen Netzwerk
+# Lokal läuft der Server immer auf 127.0.0.1. Auf Wunsch wird zusätzlich ein zweiter Server auf
+# der LAN-IP gestartet. Geräte im Netzwerk brauchen einmalig den geheimen Schlüssel aus dem
+# Link/QR-Code und bekommen dann ein Cookie.
+
+def lan_key():
+    try:
+        key = LAN_KEY_FILE.read_text().strip()
+        if key:
+            return key
+    except OSError:
+        pass
+    key = secrets.token_urlsafe(9)
+    LAN_KEY_FILE.write_text(key)
+    return key
+
+
+def lan_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("192.0.2.1", 80))  # UDP-connect sendet nichts, ermittelt nur die ausgehende Schnittstelle
+        ip = s.getsockname()[0]
+        return None if ip.startswith("127.") or ip == "0.0.0.0" else ip
+    except OSError:
+        return None
+    finally:
+        s.close()
+
+
+def lan_url():
+    return f"http://{LAN['ip']}:{PORT}/?key={lan_key()}"
+
+
+def lan_status(local):
+    st = {"local": local, "enabled": LAN["server"] is not None}
+    if local and LAN["server"]:
+        st.update(url=lan_url(), ip=LAN["ip"])
+    return st
+
+
+def set_lan(enabled):
+    with LAN_LOCK:
+        if enabled and not LAN["server"]:
+            ip = lan_ip()
+            if not ip:
+                raise ApiError("Kein lokales Netzwerk gefunden – ist der Rechner mit dem WLAN verbunden?")
+            try:
+                srv = ThreadingHTTPServer((ip, PORT), Handler)
+            except OSError as e:
+                raise ApiError(f"Konnte {ip}:{PORT} nicht öffnen: {e}")
+            threading.Thread(target=srv.serve_forever, daemon=True).start()
+            LAN.update(server=srv, ip=ip)
+            print(f"Im lokalen Netzwerk erreichbar: {lan_url()}")
+        elif not enabled and LAN["server"]:
+            srv = LAN["server"]
+            LAN.update(server=None, ip=None)
+            srv.shutdown()
+            srv.server_close()
+            print("Zugriff aus dem lokalen Netzwerk beendet.")
+
+
+DENIED_PAGE = """<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kein Zugang</title><body style="font:16px/1.5 -apple-system,sans-serif;max-width:480px;margin:40px auto;padding:0 16px">
+<h1 style="font-size:20px">Kein Zugang</h1><p>Öffne die Seite über den Link oder QR-Code, der am Rechner unter
+„Vom Handy lernen“ angezeigt wird.</p></body>"""
+
+
 # ---------------------------------------------------------------- HTTP
 
 class Handler(BaseHTTPRequestHandler):
@@ -467,6 +542,12 @@ class Handler(BaseHTTPRequestHandler):
         u = urlparse(self.path)
         parts = [unquote(p) for p in u.path.strip("/").split("/")]
         qs = {k: v[0] for k, v in parse_qs(u.query).items()}
+        if parts == ["api", "lan"]:
+            if method == "POST":
+                if not self.local:
+                    raise ApiError("Der Netzwerkzugriff lässt sich nur am Rechner selbst umschalten.", 403)
+                set_lan(bool(self.read_json().get("enabled")))
+            return lan_status(self.local)
         if method == "GET" and parts == ["api", "exams"]:
             return exam_list()
         if method == "GET" and len(parts) == 3 and parts[:2] == ["api", "exams"]:
@@ -499,7 +580,35 @@ class Handler(BaseHTTPRequestHandler):
                 return set_grade(aid, self.read_json())
         raise ApiError("nicht gefunden", 404)
 
+    def lan_authorized(self):
+        """Für Geräte im Netzwerk: Schlüssel aus ?key= oder Cookie prüfen. Antwortet selbst, wenn nicht erlaubt."""
+        key = lan_key()
+        u = urlparse(self.path)
+        given = parse_qs(u.query).get("key", [""])[0]
+        if given and secrets.compare_digest(given, key):
+            self.send_response(302)
+            self.send_header("Location", u.path or "/")
+            self.send_header("Set-Cookie", f"lpic_key={key}; Path=/; Max-Age=31536000; HttpOnly; SameSite=Lax")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return False
+        cookie = SimpleCookie(self.headers.get("Cookie") or "")
+        if "lpic_key" in cookie and secrets.compare_digest(cookie["lpic_key"].value, key):
+            return True
+        data = DENIED_PAGE.encode("utf-8")
+        self.send_response(403)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+        return False
+
     def dispatch(self, method):
+        self.local = ipaddress.ip_address(self.client_address[0].removeprefix("::ffff:")).is_loopback
+        if not self.local and (LAN["server"] is None or not self.lan_authorized()):
+            if LAN["server"] is None:
+                self.send_error(403)
+            return
         path = urlparse(self.path).path
         if method == "GET" and path in ("/", "/index.html"):
             data = (BASE / "index.html").read_bytes()
@@ -543,10 +652,16 @@ def main():
         sys.exit(check())
     EXAMS_DIR.mkdir(exist_ok=True)
     ATTEMPTS_DIR.mkdir(exist_ok=True)
-    port = next((int(a) for a in args if a.isdigit()), DEFAULT_PORT)
-    srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
-    url = f"http://127.0.0.1:{port}/"
+    global PORT
+    PORT = next((int(a) for a in args if a.isdigit()), DEFAULT_PORT)
+    srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+    url = f"http://127.0.0.1:{PORT}/"
     print(f"Prüfungsplattform läuft auf {url}  (Beenden mit Strg+C)")
+    if "--lan" in args:
+        try:
+            set_lan(True)
+        except ApiError as e:
+            print(f"Netzwerkzugriff nicht möglich: {e}")
     if "--no-browser" not in args:
         threading.Timer(0.5, webbrowser.open, (url,)).start()
     try:

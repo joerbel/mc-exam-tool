@@ -93,7 +93,18 @@ input.short{width:100%;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;m
 .chips{display:flex;flex-wrap:wrap;gap:5px}
 .grade{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-top:10px}
 .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-@media (max-width:600px){.score .big{font-size:32px} .hide-sm{display:none}}
+.switch{position:relative;display:inline-block;width:46px;height:26px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.switch span{position:absolute;inset:0;background:var(--line);border-radius:26px;cursor:pointer;transition:.2s}
+.switch span:before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked+span{background:var(--ok)}
+.switch input:checked+span:before{transform:translateX(20px)}
+.lan{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.lan a{word-break:break-all}
+#qr{background:#fff;padding:8px;border-radius:8px;line-height:0}
+#qr:empty{display:none}
+@media (max-width:600px){.score .big{font-size:32px} .hide-sm{display:none}
+  .examhead .qnav{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px} .examhead .qnav button{flex:none}}
 </style>
 </head>
 <body>
@@ -176,7 +187,7 @@ window.addEventListener('hashchange', () => { route(); window.scrollTo(0, 0); })
 
 // ------------------------------------------------------------ Übersicht
 async function viewHome() {
-  const d = await api('/api/exams');
+  const [d, lan] = await Promise.all([api('/api/exams'), api('/api/lan').catch(() => ({local: false}))]);
   const drafts = listDrafts();
   const draftIds = new Set(drafts.map(x => x.exam.id));
   const shuffle = !!store.get('lpic-opt:shuffle');
@@ -224,7 +235,16 @@ async function viewHome() {
 
   <section class="card"><div class="row" style="padding:0 0 8px"><h2 style="margin:0">Letzte Versuche</h2><a href="#/stats" class="small">Alle Versuche &amp; Statistik →</a></div>
     ${d.recent.length ? attemptsTable(d.recent, false) : '<p class="muted">Noch keine Versuche.</p>'}
-  </section>`;
+  </section>
+
+  ${lan.local ? `<section class="card"><div class="row" style="padding:0">
+    <div><h2 style="margin:0">Vom Handy lernen</h2><span class="muted small">Macht die Seite im lokalen Netzwerk (WLAN) erreichbar – nur mit dem Link bzw. QR-Code.</span></div>
+    <label class="switch" title="Zugriff aus dem lokalen Netzwerk"><input type="checkbox" id="lan" ${lan.enabled ? 'checked' : ''}><span></span></label></div>
+    ${lan.enabled ? `<div class="lan"><div id="qr"></div><div><b>Mit dem Handy scannen oder öffnen:</b><br><a href="${esc(lan.url)}">${esc(lan.url)}</a>
+      <p class="muted small" style="margin:6px 0 0">Das Handy muss im selben WLAN sein. Danach bleibt es angemeldet. Den Link nicht weitergeben – damit kann man auch Versuche löschen.
+      Ausschalten, wenn du fertig bist (z.B. in fremden Netzen).</p></div></div>` : ''}
+  </section>` : ''}`;
+  if (lan.enabled && lan.url) showQr(lan.url);
 
   $app.onclick = e => {
     const t = e.target.closest('[data-discard],[data-go]');
@@ -232,7 +252,14 @@ async function viewHome() {
     if (t.dataset.go) location.hash = t.dataset.go;
     else if (confirm('Angefangenen Versuch verwerfen?')) { store.del(draftKey(t.dataset.discard)); route(); }
   };
-  $app.onchange = e => { if (e.target.id === 'shuffle') store.set('lpic-opt:shuffle', e.target.checked); };
+  $app.onchange = async e => {
+    if (e.target.id === 'shuffle') store.set('lpic-opt:shuffle', e.target.checked);
+    if (e.target.id === 'lan') {
+      e.target.disabled = true;
+      await api('/api/lan', {method: 'POST', body: {enabled: e.target.checked}}).catch(err => alert(err.message));
+      route();
+    }
+  };
   $app.onsubmit = e => {
     e.preventDefault();
     const f = new FormData(e.target);
@@ -245,6 +272,16 @@ async function viewHome() {
     store.set('lpic-opt:n', f.get('n'));
     location.hash = '#/exam/_zufall?' + new URLSearchParams({new: 1, n: f.get('n')});
   };
+}
+
+// QR-Code für die LAN-Adresse; ohne Internet (CDN nicht erreichbar) bleibt nur der Link sichtbar.
+function showQr(text) {
+  const draw = () => { const el = document.getElementById('qr'); if (el && window.QRCode) new QRCode(el, {text, width: 150, height: 150, correctLevel: QRCode.CorrectLevel.M}); };
+  if (window.QRCode) return draw();
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+  s.onload = draw;
+  document.head.appendChild(s);
 }
 
 function attemptsTable(list, withDelete) {

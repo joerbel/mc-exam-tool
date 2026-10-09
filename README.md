@@ -17,6 +17,7 @@ python3 pruefung/server.py
 - **Freies Training:** 1, 5, 10, 20 oder endlos viele Fragen mit sofortiger Auflösung, filterbar nach Thema und nach „zuletzt falsch“ / „noch nie beantwortet“. Tastatur: A–F wählen, Enter prüfen/weiter.
 - **Zufallsprüfung** aus allen Fragen im Prüfungsmodus.
 - **Statistik** pro Thema, Versuchshistorie.
+- **Vom Handy lernen:** Schalter auf der Startseite (oder `--lan` beim Start) macht die Seite im WLAN erreichbar. Zugang nur über einen geheimen Link/QR-Code; umschalten lässt sich nur am Rechner selbst.
 - Versuche werden als JSON in `pruefung/attempts/` gespeichert (nicht im Repo) und können dort auch extern bewertet/kommentiert werden (`review`-Feld).
 
 ## Fragen

@@ -6,8 +6,9 @@
 !/CLAUDE.md
 !/pruefung/
 
-# eigene Versuche bleiben lokal
+# eigene Versuche und der LAN-Zugangsschlüssel bleiben lokal
 /pruefung/attempts/
+/pruefung/.lan-key
 
 .DS_Store
 __pycache__/
