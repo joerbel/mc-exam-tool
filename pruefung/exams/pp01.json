@@ -1,0 +1,496 @@
+{
+  "title": "Probeprüfung 1",
+  "description": "Alle Kursthemen, davon 2 Freitextfragen",
+  "durationMinutes": 60,
+  "passPercent": 60,
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single",
+      "text": "Wer veröffentlichte 1991 die erste Version des Linux-Kernels?",
+      "options": [
+        "Andrew S. Tanenbaum",
+        "Linus Torvalds",
+        "Dennis Ritchie",
+        "Richard Stallman"
+      ],
+      "correct": 1,
+      "explanation": "Torvalds kündigte sein Hobbyprojekt 1991 als Student in Helsinki in der Newsgroup comp.os.minix an.",
+      "topic": "Geschichte & Lizenzen"
+    },
+    {
+      "id": "q02",
+      "type": "single",
+      "text": "Welcher Befehl zeigt auch versteckte Dateien an?",
+      "options": [
+        "`ls -h`",
+        "`ls -a`",
+        "`ls -R`",
+        "`ls -l`"
+      ],
+      "correct": 1,
+      "explanation": "Dateien und Verzeichnisse, deren Name mit einem Punkt beginnt, sind versteckt. `-a` (all) zeigt sie mit an.",
+      "topic": "Shell-Grundlagen"
+    },
+    {
+      "id": "q03",
+      "type": "short",
+      "text": "Mit welchem Befehl legen Sie in einem Schritt das Verzeichnis `a/b/c` an, auch wenn `a` noch nicht existiert? (vollständiger Befehl)",
+      "accept": [
+        "mkdir -p a/b/c",
+        "mkdir --parents a/b/c"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "`-p` (parents) legt fehlende übergeordnete Verzeichnisse mit an.",
+      "topic": "Shell-Grundlagen"
+    },
+    {
+      "id": "q04",
+      "type": "single",
+      "text": "Welcher Befehl zeigt die letzten 20 Zeilen von `/var/log/syslog` an?",
+      "options": [
+        "`cat -n 20 /var/log/syslog`",
+        "`head -n 20 /var/log/syslog`",
+        "`tail -n 20 /var/log/syslog`",
+        "`less -20 /var/log/syslog`"
+      ],
+      "correct": 2,
+      "explanation": "`head` zeigt den Anfang, `tail` das Ende einer Datei (Standard: 10 Zeilen).",
+      "topic": "Dateien anzeigen & Textwerkzeuge"
+    },
+    {
+      "id": "q05",
+      "type": "single",
+      "text": "Was gibt der letzte Befehl aus?",
+      "options": [
+        "`FARBE`",
+        "Die Fehlermeldung „variable not found“",
+        "`blau`",
+        "Eine leere Zeile"
+      ],
+      "correct": 3,
+      "explanation": "`FARBE` wurde nicht exportiert. Die neue Bash ist ein Kindprozess und erbt nur Umgebungsvariablen (exportierte Variablen).",
+      "code": "FARBE=blau\nbash\necho $FARBE",
+      "topic": "Variablen & Umgebung"
+    },
+    {
+      "id": "q06",
+      "type": "single",
+      "text": "Warum muss `cd` ein Shell-Builtin sein und kann kein externes Programm sein?",
+      "options": [
+        "Weil `cd` nur von root benutzt werden darf",
+        "Ein externes Programm liefe in einem eigenen Prozess und könnte das Arbeitsverzeichnis der Shell nicht ändern",
+        "Externe Programme dürfen das Dateisystem nicht lesen",
+        "Weil Builtins grundsätzlich schneller sind – technisch wäre es egal"
+      ],
+      "correct": 1,
+      "explanation": "Ein Kindprozess kann nur sein eigenes Arbeitsverzeichnis ändern, nicht das seines Elternprozesses (der Shell).",
+      "topic": "Befehlstypen"
+    },
+    {
+      "id": "q07",
+      "type": "single",
+      "text": "Mit welcher Eingabe speichern Sie in vim (Normalmodus) die Datei und beenden den Editor?",
+      "options": [
+        "`:e!`",
+        "`dd`",
+        "`:q!`",
+        "`:wq`"
+      ],
+      "correct": 3,
+      "explanation": "`:w` speichert, `:q` beendet, `:q!` beendet ohne zu speichern. Alternativen zu `:wq`: `:x` oder `ZZ`.",
+      "topic": "Editoren (vim, nano)"
+    },
+    {
+      "id": "q08",
+      "type": "multi",
+      "text": "Welche Aussagen zu `su -` und `sudo` sind richtig?",
+      "options": [
+        "`sudo` fragt nach dem eigenen Passwort des aufrufenden Benutzers.",
+        "`su -` übernimmt die Umgebung (z.B. PATH, Arbeitsverzeichnis) des aufrufenden Benutzers unverändert.",
+        "`su -` fragt nach dem Passwort des Zielbenutzers (z.B. root).",
+        "`sudo` erlaubt grundsätzlich jedem Benutzer jeden Befehl."
+      ],
+      "correct": [
+        0,
+        2
+      ],
+      "explanation": "Wer was per sudo darf, steht in `/etc/sudoers`. `su -` startet eine Login-Shell mit der Umgebung des Zielbenutzers.",
+      "topic": "sudo & su"
+    },
+    {
+      "id": "q09",
+      "type": "single",
+      "text": "In welchem Abschnitt der Manpages stehen Befehle zur Systemverwaltung wie `useradd`?",
+      "options": [
+        "1",
+        "3",
+        "5",
+        "8"
+      ],
+      "correct": 3,
+      "explanation": "1 = Benutzerbefehle, 2 = Systemaufrufe, 3 = Bibliotheksfunktionen, 4 = Gerätedateien, 5 = Dateiformate, 7 = Verschiedenes, 8 = Systemverwaltung.",
+      "topic": "Hilfe & Dokumentation"
+    },
+    {
+      "id": "q10",
+      "type": "single",
+      "text": "Was bewirkt `!!` in der Bash?",
+      "options": [
+        "Es negiert den Rückgabewert des letzten Befehls",
+        "Es führt den zuletzt eingegebenen Befehl erneut aus",
+        "Es beendet die Shell sofort",
+        "Es löscht die Befehlsgeschichte"
+      ],
+      "correct": 1,
+      "explanation": "Praktisch z.B. als `sudo !!`, wenn man vergessen hat, den Befehl mit sudo auszuführen.",
+      "topic": "History"
+    },
+    {
+      "id": "q11",
+      "type": "single",
+      "text": "Was gibt `echo '$HOME'` aus?",
+      "options": [
+        "`/home/anna`",
+        "`$HOME`",
+        "Eine leere Zeile",
+        "`'$HOME'`"
+      ],
+      "correct": 1,
+      "explanation": "In einfachen Anführungszeichen wird nichts ersetzt – auch keine Variablen.",
+      "topic": "Sonderzeichen & Quoting"
+    },
+    {
+      "id": "q12",
+      "type": "single",
+      "text": "Was bewirkt `ls /gibtsnicht 2> fehler.txt`?",
+      "options": [
+        "`fehler.txt` wird als Eingabe gelesen",
+        "Die Fehlermeldung landet in `fehler.txt`, eine normale Ausgabe erschiene auf dem Bildschirm",
+        "Die normale Ausgabe landet in `fehler.txt`",
+        "Beide Ausgaben landen in `fehler.txt`"
+      ],
+      "correct": 1,
+      "explanation": "`2>` leitet Kanal 2 (stderr) um, `>` bzw. `1>` Kanal 1 (stdout).",
+      "topic": "Ein-/Ausgabe-Umleitung & Pipes"
+    },
+    {
+      "id": "q13",
+      "type": "single",
+      "text": "Was bewirkt `echo test >> datei.txt`?",
+      "options": [
+        "Es überschreibt `datei.txt` mit `test`",
+        "Es liest `datei.txt` als Eingabe für echo",
+        "Es hängt nur an, wenn `datei.txt` existiert, sonst gibt es einen Fehler",
+        "Es hängt `test` an das Ende von `datei.txt` an"
+      ],
+      "correct": 3,
+      "explanation": "`>>` hängt an (legt die Datei bei Bedarf an), `>` überschreibt.",
+      "topic": "Ein-/Ausgabe-Umleitung & Pipes"
+    },
+    {
+      "id": "q14",
+      "type": "single",
+      "text": "Welche Information steht im **letzten** Feld einer Zeile in `/etc/passwd`?",
+      "options": [
+        "Das Heimatverzeichnis",
+        "Die Login-Shell",
+        "Die primäre Gruppe (GID)",
+        "Das verschlüsselte Passwort"
+      ],
+      "correct": 1,
+      "explanation": "Aufbau: `name:x:UID:GID:Kommentar:Heimatverzeichnis:Shell`. Das `x` bedeutet, dass das Passwort in /etc/shadow steht.",
+      "topic": "Benutzer & Gruppen"
+    },
+    {
+      "id": "q15",
+      "type": "single",
+      "text": "Welcher Befehl löscht den Benutzer `max` einschließlich seines Heimatverzeichnisses?",
+      "options": [
+        "`rm -r /home/max`",
+        "`userdel max`",
+        "`userdel -r max`",
+        "`usermod -d max`"
+      ],
+      "correct": 2,
+      "explanation": "Ohne `-r` bleibt das Heimatverzeichnis erhalten. Nur `rm` würde den Eintrag in /etc/passwd stehen lassen.",
+      "topic": "Benutzer & Gruppen"
+    },
+    {
+      "id": "q16",
+      "type": "single",
+      "text": "Welche Oktalzahl entspricht den Rechten `rwxr-x---`?",
+      "options": [
+        "755",
+        "570",
+        "750",
+        "740"
+      ],
+      "correct": 2,
+      "explanation": "r = 4, w = 2, x = 1: rwx = 7, r-x = 5, --- = 0.",
+      "topic": "Dateirechte"
+    },
+    {
+      "id": "q17",
+      "type": "single",
+      "text": "Was bedeutet das Ausführungsrecht (x) bei einem **Verzeichnis**?",
+      "options": [
+        "Man darf den Inhalt auflisten",
+        "Alle Dateien darin werden ausführbar",
+        "Man darf in das Verzeichnis wechseln und auf Einträge darin zugreifen",
+        "Man darf das Verzeichnis löschen"
+      ],
+      "correct": 2,
+      "explanation": "Zum Auflisten braucht man r, zum Wechseln/Durchqueren x.",
+      "topic": "Dateirechte"
+    },
+    {
+      "id": "q18",
+      "type": "single",
+      "text": "Wozu dient das Sticky Bit auf `/tmp`?",
+      "options": [
+        "Neue Dateien erben die Gruppe des Verzeichnisses",
+        "Nur der Eigentümer einer Datei (bzw. des Verzeichnisses oder root) darf sie dort löschen oder umbenennen",
+        "Dateien in `/tmp` werden beim Neustart gelöscht",
+        "Programme laufen mit den Rechten des Eigentümers"
+      ],
+      "correct": 1,
+      "explanation": "In `ls -l` erkennbar am `t` an letzter Stelle: `drwxrwxrwt`. Oktal 1000.",
+      "topic": "Spezialrechte & ACLs"
+    },
+    {
+      "id": "q19",
+      "type": "single",
+      "text": "Woran erkennen Sie in der Ausgabe von `ls -l`, dass für eine Datei eine ACL gesetzt ist?",
+      "options": [
+        "Gar nicht, das sieht man nur mit `getfacl`",
+        "An einem großen `S` bei den Gruppenrechten",
+        "An einem `a` an erster Stelle",
+        "An einem `+` hinter den Rechten, z.B. `-rw-rw-r--+`"
+      ],
+      "correct": 3,
+      "explanation": "Die Einträge selbst zeigt `getfacl datei` an.",
+      "topic": "Spezialrechte & ACLs"
+    },
+    {
+      "id": "q20",
+      "type": "single",
+      "text": "In der Ausgabe von `ls -l` beginnt eine Zeile mit `c`. Um was für eine Datei handelt es sich?",
+      "options": [
+        "Eine zeichenorientierte Gerätedatei",
+        "Ein symbolischer Link",
+        "Eine Named Pipe",
+        "Ein Verzeichnis"
+      ],
+      "correct": 0,
+      "explanation": "Erstes Zeichen: `-` Datei, `d` Verzeichnis, `l` Symlink, `c` zeichenorientiertes Gerät, `b` blockorientiertes Gerät, `p` Named Pipe, `s` Socket.",
+      "topic": "Dateitypen & Links"
+    },
+    {
+      "id": "q21",
+      "type": "single",
+      "text": "In welchem Verzeichnis liegen die systemweiten Konfigurationsdateien?",
+      "options": [
+        "`/var`",
+        "`/etc`",
+        "`/usr`",
+        "`/opt`"
+      ],
+      "correct": 1,
+      "explanation": "`/usr` enthält (statische) Programme und Bibliotheken, `/var` veränderliche Daten, `/opt` Zusatzsoftware.",
+      "topic": "Dateisystem-Hierarchie"
+    },
+    {
+      "id": "q22",
+      "type": "single",
+      "text": "Wie viele **primäre** Partitionen sind bei einer MBR-Partitionstabelle möglich?",
+      "options": [
+        "2",
+        "4",
+        "16",
+        "128"
+      ],
+      "correct": 1,
+      "explanation": "Für mehr Partitionen wird eine davon als erweiterte Partition angelegt, die logische Partitionen enthält.",
+      "topic": "Partitionierung"
+    },
+    {
+      "id": "q23",
+      "type": "single",
+      "text": "Welcher Befehl listet die angeschlossenen USB-Geräte auf?",
+      "options": [
+        "`lsusb`",
+        "`lsmod`",
+        "`lsblk`",
+        "`lspci`"
+      ],
+      "correct": 0,
+      "explanation": "`lsusb -t` zeigt die Geräte als Baum, `-v` ausführlich.",
+      "topic": "Hardware"
+    },
+    {
+      "id": "q24",
+      "type": "single",
+      "text": "Was zeigt `journalctl -b` an?",
+      "options": [
+        "Die letzten 10 Einträge",
+        "Fortlaufend neue Einträge",
+        "Nur Meldungen des Kernels",
+        "Die Logeinträge seit dem letzten Systemstart"
+      ],
+      "correct": 3,
+      "explanation": "`-b -1` zeigt den vorherigen Bootvorgang (wenn das Journal dauerhaft gespeichert wird).",
+      "topic": "Logs (journalctl)"
+    },
+    {
+      "id": "q25",
+      "type": "single",
+      "text": "Welches Signal sendet `kill PID` ohne weitere Optionen?",
+      "options": [
+        "SIGHUP (1)",
+        "SIGTERM (15)",
+        "SIGSTOP (19)",
+        "SIGKILL (9)"
+      ],
+      "correct": 1,
+      "explanation": "SIGTERM bittet den Prozess, sich sauber zu beenden. `kill -l` listet alle Signale.",
+      "topic": "Prozesse"
+    },
+    {
+      "id": "q26",
+      "type": "multi",
+      "text": "Welche Befehle zeigen laufende Prozesse an?",
+      "options": [
+        "`lsproc`",
+        "`pstree`",
+        "`ps aux`",
+        "`proclist`",
+        "`top`"
+      ],
+      "correct": [
+        1,
+        2,
+        4
+      ],
+      "explanation": "Ebenfalls praktisch: `htop` (interaktiv) und `ps -ef`.",
+      "topic": "Prozesse"
+    },
+    {
+      "id": "q27",
+      "type": "multi",
+      "text": "Welche Befehle sorgen dafür, dass der Dienst nginx beim nächsten Systemstart automatisch startet?",
+      "options": [
+        "`systemctl restart nginx`",
+        "`systemctl enable nginx`",
+        "`systemctl start nginx`",
+        "`systemctl enable --now nginx`"
+      ],
+      "correct": [
+        1,
+        3
+      ],
+      "explanation": "`start` startet nur jetzt. `enable --now` aktiviert für den Systemstart und startet zusätzlich sofort.",
+      "topic": "systemd & Dienste"
+    },
+    {
+      "id": "q28",
+      "type": "single",
+      "text": "Sie haben das root-Passwort vergessen und `init=/bin/bash` an die Kernelzeile angehängt. Was müssen Sie nach dem Booten zuerst tun, bevor `passwd` funktioniert?",
+      "options": [
+        "`mount -o remount,rw /`",
+        "`su -`",
+        "`fsck /`",
+        "`systemctl start sshd`"
+      ],
+      "correct": 0,
+      "explanation": "Das Root-Dateisystem ist zunächst nur lesbar eingehängt; ohne Schreibzugriff kann `/etc/shadow` nicht geändert werden.",
+      "topic": "Bootprozess"
+    },
+    {
+      "id": "q29",
+      "type": "single",
+      "text": "Mit welchem Befehl aktualisieren Sie unter Debian/Ubuntu die Paketlisten (Kataloge) aus den Repositories?",
+      "options": [
+        "`apt update`",
+        "`apt refresh`",
+        "`apt upgrade`",
+        "`dpkg --update`"
+      ],
+      "correct": 0,
+      "explanation": "`update` lädt nur die Kataloge neu; `upgrade` installiert danach die neueren Paketversionen.",
+      "topic": "Paketverwaltung"
+    },
+    {
+      "id": "q30",
+      "type": "single",
+      "text": "Welcher High-Level-Paketmanager wird unter openSUSE verwendet?",
+      "options": [
+        "`dnf`",
+        "`zypper`",
+        "`pacman`",
+        "`apt`"
+      ],
+      "correct": 1,
+      "explanation": "Z.B. `zypper refresh`, `zypper install paket`, `zypper search begriff`.",
+      "topic": "Paketverwaltung"
+    },
+    {
+      "id": "q31",
+      "type": "single",
+      "text": "In welche Datei werden die DNS-Server für die Namensauflösung eingetragen?",
+      "options": [
+        "`/etc/hosts`",
+        "`/etc/hostname`",
+        "`/etc/resolv.conf`",
+        "`/etc/services`"
+      ],
+      "correct": 2,
+      "explanation": "Einträge der Form `nameserver 192.168.1.1`. Oft wird die Datei von NetworkManager oder systemd-resolved verwaltet.",
+      "topic": "Netzwerk"
+    },
+    {
+      "id": "q32",
+      "type": "single",
+      "text": "Was macht `ssh-copy-id anna@srv01`?",
+      "options": [
+        "Es kopiert beliebige Dateien verschlüsselt wie scp",
+        "Es kopiert den privaten Schlüssel auf den Server",
+        "Es erzeugt ein neues Schlüsselpaar",
+        "Es hängt den eigenen öffentlichen Schlüssel an `~/.ssh/authorized_keys` von anna auf srv01 an"
+      ],
+      "correct": 3,
+      "explanation": "Danach ist die Anmeldung per Schlüssel ohne Passwort möglich.",
+      "topic": "SSH"
+    },
+    {
+      "id": "q33",
+      "type": "text",
+      "topic": "systemd & Dienste",
+      "points": 3,
+      "text": "Erklären Sie, was die Befehle `systemctl start`, `systemctl enable` und `systemctl mask` bei einem Dienst bewirken.",
+      "modelAnswer": "`systemctl start` startet den Dienst **sofort** – aber nur bis zum nächsten Neustart.\n`systemctl enable` sorgt dafür, dass der Dienst **beim Systemstart automatisch** gestartet wird (dazu werden Symlinks in einem `*.target.wants`-Verzeichnis angelegt). Sofort gestartet wird er dadurch nicht – außer mit `--now`.\n`systemctl mask` **verhindert jeden Start** des Dienstes – manuell, beim Booten oder als Abhängigkeit –, indem die Unit auf `/dev/null` verlinkt wird. Rückgängig mit `systemctl unmask`.",
+      "keywords": [
+        "sofort|jetzt",
+        "Systemstart|Booten|Boot",
+        "Symlink|wants",
+        "verhindert|nicht gestartet|blockiert|kein Start",
+        "/dev/null|unmask"
+      ]
+    },
+    {
+      "id": "q34",
+      "type": "text",
+      "topic": "Spezialrechte & ACLs",
+      "points": 3,
+      "text": "Das Verzeichnis `/daten/projekt` soll von allen Mitgliedern der Gruppe `team` gemeinsam genutzt werden: Alle sollen dort Dateien anlegen können, neue Dateien sollen automatisch der Gruppe `team` gehören, und Dateien sollen nur von ihrem Eigentümer gelöscht werden dürfen. Andere Benutzer erhalten keinen Zugriff. Geben Sie die nötigen Befehle an und erklären Sie sie kurz.",
+      "modelAnswer": "```\nchgrp team /daten/projekt\nchmod 3770 /daten/projekt\n```\n- `chgrp team`: Das Verzeichnis gehört der Gruppe team.\n- `770`: Eigentümer und Gruppe haben rwx (anlegen/löschen braucht w und x am Verzeichnis), andere haben keine Rechte.\n- `2000` = **SGID**: Neue Dateien erben die Gruppe team.\n- `1000` = **Sticky Bit**: Nur der Eigentümer einer Datei (bzw. des Verzeichnisses oder root) darf sie löschen oder umbenennen.\nGleichwertig: `chmod 770`, `chmod g+s` und `chmod o+t` einzeln.",
+      "keywords": [
+        "chgrp|chown",
+        "770",
+        "SGID|g+s|2770|3770",
+        "Sticky|+t|3770|1770"
+      ]
+    }
+  ]
+}

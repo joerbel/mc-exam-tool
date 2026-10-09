@@ -1,0 +1,491 @@
+{
+  "title": "Probeprüfung 5",
+  "description": "Alle Kursthemen, davon 2 Freitextfragen",
+  "durationMinutes": 60,
+  "passPercent": 60,
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single",
+      "text": "Wo wurde Unix Ende der 1960er-Jahre entwickelt?",
+      "options": [
+        "Am MIT von Richard Stallman",
+        "An der Universität Amsterdam von Andrew Tanenbaum",
+        "In den Bell Labs von AT&T (Ken Thompson, Dennis Ritchie)",
+        "An der Universität Helsinki"
+      ],
+      "correct": 2,
+      "explanation": "Unix entstand ab 1969 in den Bell Labs. Später wurde es kommerzialisiert (System V, viele proprietäre Varianten) – eine Gegenbewegung war das GNU-Projekt.",
+      "topic": "Geschichte & Lizenzen"
+    },
+    {
+      "id": "q02",
+      "type": "single",
+      "text": "Welcher Befehl wechselt zurück in das Verzeichnis, in dem Sie sich **zuvor** befunden haben?",
+      "options": [
+        "`cd .`",
+        "`cd ~`",
+        "`cd ..`",
+        "`cd -`"
+      ],
+      "correct": 3,
+      "explanation": "`cd -` springt ins vorherige Arbeitsverzeichnis (gespeichert in `OLDPWD`). `cd ..` geht eine Ebene nach oben.",
+      "topic": "Shell-Grundlagen"
+    },
+    {
+      "id": "q03",
+      "type": "single",
+      "text": "Welcher Befehl gibt die ersten 5 Zeilen von `/etc/passwd` aus?",
+      "options": [
+        "`tail -n 5 /etc/passwd`",
+        "`head -n 5 /etc/passwd`",
+        "`sort -5 /etc/passwd`",
+        "`cat -5 /etc/passwd`"
+      ],
+      "correct": 1,
+      "explanation": "`head -n 5` (oder kurz `head -5`) zeigt die ersten 5 Zeilen.",
+      "topic": "Dateien anzeigen & Textwerkzeuge"
+    },
+    {
+      "id": "q04",
+      "type": "single",
+      "text": "Eine Variable soll bei jedem Start Ihrer interaktiven Bash automatisch gesetzt sein. Wo tragen Sie sie üblicherweise ein?",
+      "options": [
+        "In `~/.bash_history`",
+        "Nirgends – es reicht, sie einmal mit `export` zu setzen",
+        "In `/etc/passwd`",
+        "In `~/.bashrc`"
+      ],
+      "correct": 3,
+      "explanation": "Variablen gelten nur, bis die Shell beendet wird. Dauerhaft werden sie über Startdateien wie `~/.bashrc`, `~/.profile` oder systemweit `/etc/profile`.",
+      "topic": "Variablen & Umgebung"
+    },
+    {
+      "id": "q05",
+      "type": "single",
+      "text": "Wie zeigen Sie die Hilfe zum Bash-Builtin `cd` an?",
+      "options": [
+        "`info -b cd`",
+        "`help cd`",
+        "`cd --manual`",
+        "`which cd`"
+      ],
+      "correct": 1,
+      "explanation": "Builtins haben meist keine eigene Manpage; `help` zeigt die in die Bash eingebaute Hilfe an.",
+      "topic": "Befehlstypen"
+    },
+    {
+      "id": "q06",
+      "type": "single",
+      "text": "Was bewirkt in vim der Befehl `:%s/alt/neu/g`?",
+      "options": [
+        "Er ersetzt in der ganzen Datei jedes Vorkommen von `alt` durch `neu`",
+        "Er ersetzt nur das erste Vorkommen in der aktuellen Zeile",
+        "Er speichert die Datei unter dem Namen `neu`",
+        "Er sucht `alt` und springt zum ersten Treffer"
+      ],
+      "correct": 0,
+      "explanation": "`%` = alle Zeilen, `s` = substitute, `g` = alle Vorkommen pro Zeile.",
+      "topic": "Editoren (vim, nano)"
+    },
+    {
+      "id": "q07",
+      "type": "short",
+      "text": "Mit welchem Befehl (inkl. Option) zeigen Sie an, welche Befehle Sie per sudo ausführen dürfen?",
+      "accept": [
+        "sudo -l",
+        "sudo --list"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "`sudo -l` listet die für den aktuellen Benutzer erlaubten Befehle.",
+      "topic": "sudo & su"
+    },
+    {
+      "id": "q08",
+      "type": "single",
+      "text": "Wo finden Sie zu installierten Paketen häufig zusätzliche Dokumentation wie README- und Changelog-Dateien?",
+      "options": [
+        "`/var/doc`",
+        "`/etc/doc`",
+        "`/usr/bin/doc`",
+        "`/usr/share/doc`"
+      ],
+      "correct": 3,
+      "explanation": "Manpages selbst liegen unter `/usr/share/man`.",
+      "topic": "Hilfe & Dokumentation"
+    },
+    {
+      "id": "q09",
+      "type": "single",
+      "text": "Welcher Befehl führt `cd /etc` erneut aus?",
+      "options": [
+        "`history 502`",
+        "`#502`",
+        "`!-502`",
+        "`!502`"
+      ],
+      "correct": 3,
+      "explanation": "`!n` führt den Befehl mit der Nummer n aus, `!-n` den n-letzten Befehl, `!text` den letzten Befehl, der mit text beginnt.",
+      "code": "$ history | tail -n 3\n  501  ls -l\n  502  cd /etc\n  503  cat hosts",
+      "topic": "History"
+    },
+    {
+      "id": "q10",
+      "type": "single",
+      "text": "Wie legen Sie eine Datei mit dem Namen `mein bericht.txt` (mit Leerzeichen) an?",
+      "options": [
+        "`touch (mein bericht.txt)`",
+        "`touch {mein bericht.txt}`",
+        "`touch \"mein bericht.txt\"`",
+        "`touch mein bericht.txt`"
+      ],
+      "correct": 2,
+      "explanation": "Ohne Quoting entstehen zwei Dateien: `mein` und `bericht.txt`. Ebenfalls richtig wäre `touch mein\\ bericht.txt`.",
+      "topic": "Sonderzeichen & Quoting"
+    },
+    {
+      "id": "q11",
+      "type": "single",
+      "text": "Welche Nummern haben die drei Standardkanäle stdin, stdout und stderr?",
+      "options": [
+        "1, 2, 3",
+        "1, 0, 2",
+        "0, 1, 2",
+        "0, 1, 3"
+      ],
+      "correct": 2,
+      "explanation": "stdin = 0 (Eingabe, Tastatur), stdout = 1 (Ausgabe), stderr = 2 (Fehlerausgabe).",
+      "topic": "Ein-/Ausgabe-Umleitung & Pipes"
+    },
+    {
+      "id": "q12",
+      "type": "single",
+      "text": "Wie verwerfen Sie alle Fehlermeldungen von `find / -name passwd`?",
+      "options": [
+        "`find / -name passwd 2> /dev/null`",
+        "`find / -name passwd | /dev/null`",
+        "`find / -name passwd 2| null`",
+        "`find / -name passwd > /dev/null`"
+      ],
+      "correct": 0,
+      "explanation": "`/dev/null` ist der „Mülleimer“: Alles, was hineingeschrieben wird, verschwindet.",
+      "topic": "Ein-/Ausgabe-Umleitung & Pipes"
+    },
+    {
+      "id": "q13",
+      "type": "single",
+      "text": "Welche UID hat der Benutzer root?",
+      "options": [
+        "0",
+        "1",
+        "100",
+        "1000"
+      ],
+      "correct": 0,
+      "explanation": "Rechte hängen an der UID 0, nicht am Namen root. Normale Benutzer beginnen meist bei 1000, darunter liegen Systembenutzer.",
+      "topic": "Benutzer & Gruppen"
+    },
+    {
+      "id": "q14",
+      "type": "single",
+      "text": "Welcher Befehl fügt `anna` der Zusatzgruppe `docker` hinzu, **ohne** ihre anderen Gruppenmitgliedschaften zu verändern?",
+      "options": [
+        "`usermod -G docker anna`",
+        "`groupadd docker anna`",
+        "`useradd -G docker anna`",
+        "`usermod -aG docker anna`"
+      ],
+      "correct": 3,
+      "explanation": "`-a` (append) ist entscheidend. Alternativ: `gpasswd -a anna docker`. Die neue Gruppe gilt erst nach erneutem Anmelden.",
+      "topic": "Benutzer & Gruppen"
+    },
+    {
+      "id": "q15",
+      "type": "short",
+      "text": "Die Datei `skript.sh` soll für den Eigentümer ausführbar werden, ohne andere Rechte zu ändern. Geben Sie den Befehl in **ugo-Schreibweise** an.",
+      "accept": [
+        "chmod u+x skript.sh"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "Mit Oktalzahlen müsste man alle Rechte neu setzen; die symbolische Schreibweise ändert nur das gewünschte Bit.",
+      "topic": "Dateirechte"
+    },
+    {
+      "id": "q16",
+      "type": "single",
+      "text": "Benutzer `max` ist Mitglied der Gruppe `buero`, aber nicht der Eigentümer. Was darf max mit der Datei?",
+      "options": [
+        "Lesen, schreiben und ausführen",
+        "Lesen und schreiben",
+        "Nichts",
+        "Nur lesen"
+      ],
+      "correct": 3,
+      "explanation": "Es gelten die Gruppenrechte `r--`. Linux prüft nacheinander Eigentümer → Gruppe → andere und nimmt die erste passende Kategorie.",
+      "code": "-rw-r----- 1 anna buero 1200 Okt  5 10:00 notizen.txt",
+      "topic": "Dateirechte"
+    },
+    {
+      "id": "q17",
+      "type": "single",
+      "text": "Welche Oktalschreibweise entspricht diesen Rechten?",
+      "options": [
+        "0755",
+        "1755",
+        "2755",
+        "4755"
+      ],
+      "correct": 3,
+      "explanation": "Das `s` an der x-Stelle des Eigentümers ist SUID (4000). SGID = 2000, Sticky = 1000.",
+      "code": "-rwsr-xr-x 1 root root 68208 Jan 10 12:00 /usr/bin/beispiel",
+      "topic": "Spezialrechte & ACLs"
+    },
+    {
+      "id": "q18",
+      "type": "single",
+      "text": "Mit welchem Zeichen beginnt die `ls -l`-Zeile eines Sockets?",
+      "options": [
+        "`p`",
+        "`l`",
+        "`s`",
+        "`b`"
+      ],
+      "correct": 2,
+      "explanation": "Sockets dienen der Kommunikation zwischen Prozessen, z.B. `/run/systemd/journal/socket`.",
+      "topic": "Dateitypen & Links"
+    },
+    {
+      "id": "q19",
+      "type": "multi",
+      "text": "Welche Verzeichnisse enthalten virtuelle Dateisysteme, deren Inhalt der Kernel zur Laufzeit erzeugt?",
+      "options": [
+        "`/usr`",
+        "`/etc`",
+        "`/proc`",
+        "`/sys`"
+      ],
+      "correct": [
+        2,
+        3
+      ],
+      "explanation": "Neben /proc (Prozesse) und /sys (Geräte, Treiber) sind auch /dev (devtmpfs) und /run (tmpfs) dynamisch.",
+      "topic": "Dateisystem-Hierarchie"
+    },
+    {
+      "id": "q20",
+      "type": "single",
+      "text": "Welcher Befehl zeigt alle Blockgeräte und ihre Partitionen als Baum an?",
+      "options": [
+        "`lspci`",
+        "`lsusb`",
+        "`lsblk`",
+        "`df -i`"
+      ],
+      "correct": 2,
+      "explanation": "`lsblk -f` zeigt zusätzlich Dateisysteme und UUIDs.",
+      "topic": "Partitionierung"
+    },
+    {
+      "id": "q21",
+      "type": "single",
+      "text": "Welcher Befehl hängt die Partition `/dev/sdb1` im Verzeichnis `/mnt/usb` ein?",
+      "options": [
+        "`ln -s /dev/sdb1 /mnt/usb`",
+        "`mount /dev/sdb1 /mnt/usb`",
+        "`mkfs /dev/sdb1 /mnt/usb`",
+        "`mount /mnt/usb /dev/sdb1`"
+      ],
+      "correct": 1,
+      "explanation": "Erst das Gerät, dann der Einhängepunkt. Aushängen mit `umount /mnt/usb`.",
+      "topic": "Partitionierung"
+    },
+    {
+      "id": "q22",
+      "type": "single",
+      "text": "Welcher Befehl zeigt die aktuell geladenen Kernelmodule an?",
+      "options": [
+        "`ls /dev`",
+        "`lspci -m`",
+        "`lsmod`",
+        "`insmod`"
+      ],
+      "correct": 2,
+      "explanation": "Module laden/entfernen mit `modprobe modul` bzw. `modprobe -r modul`.",
+      "topic": "Hardware"
+    },
+    {
+      "id": "q23",
+      "type": "multi",
+      "text": "Welche Aussagen zu journalctl sind richtig?",
+      "options": [
+        "`journalctl -k` zeigt nur Kernelmeldungen.",
+        "`journalctl -f` löscht alte Logeinträge.",
+        "Das Journal ist eine Textdatei, die man auch mit `cat` lesen kann.",
+        "`journalctl -p err` zeigt nur Meldungen der Priorität err und wichtiger."
+      ],
+      "correct": [
+        0,
+        3
+      ],
+      "explanation": "Das Journal ist binär gespeichert; gelesen wird es mit journalctl.",
+      "topic": "Logs (journalctl)"
+    },
+    {
+      "id": "q24",
+      "type": "single",
+      "text": "Was bedeutet der Prozesszustand `Z` in der Ausgabe von `ps`?",
+      "options": [
+        "Der Prozess wurde angehalten",
+        "Der Prozess läuft mit höchster Priorität",
+        "Zombie: Der Prozess ist beendet, aber sein Elternprozess hat den Exit-Status noch nicht abgefragt",
+        "Der Prozess schläft"
+      ],
+      "correct": 2,
+      "explanation": "Weitere Zustände: R = läuft, S = schläft, D = wartet ununterbrechbar (meist auf I/O), T = gestoppt.",
+      "topic": "Prozesse"
+    },
+    {
+      "id": "q25",
+      "type": "single",
+      "text": "Welchen Wertebereich haben Nice-Werte unter Linux, und was bedeutet ein höherer Wert?",
+      "options": [
+        "-20 bis 19; ein höherer Wert bedeutet niedrigere Priorität",
+        "-20 bis 19; ein höherer Wert bedeutet höhere Priorität",
+        "0 bis 99; ein höherer Wert bedeutet höhere Priorität",
+        "1 bis 10; ein höherer Wert bedeutet mehr CPU-Zeit"
+      ],
+      "correct": 0,
+      "explanation": "Ein „netter“ Prozess lässt anderen den Vortritt. Nur root darf negative Werte setzen. Befehle: `nice -n 10 befehl`, `renice`.",
+      "topic": "Prozesse"
+    },
+    {
+      "id": "q26",
+      "type": "single",
+      "text": "Sie haben eine Unit-Datei in `/etc/systemd/system/` geändert. Was müssen Sie ausführen, damit systemd die Änderung einliest?",
+      "options": [
+        "`systemd --refresh`",
+        "`systemctl reload-all`",
+        "`systemctl daemon-reload`",
+        "`systemctl reset`"
+      ],
+      "correct": 2,
+      "explanation": "Danach den Dienst ggf. mit `systemctl restart` neu starten.",
+      "topic": "systemd & Dienste"
+    },
+    {
+      "id": "q27",
+      "type": "single",
+      "text": "Welcher Prozess wird vom Kernel als erster im Userspace gestartet?",
+      "options": [
+        "GRUB",
+        "init bzw. systemd (PID 1)",
+        "bash",
+        "sshd"
+      ],
+      "correct": 1,
+      "explanation": "Welches Programm das ist, lässt sich mit dem Kernelparameter `init=` ändern – genau das nutzt der `init=/bin/bash`-Trick.",
+      "topic": "Bootprozess"
+    },
+    {
+      "id": "q28",
+      "type": "single",
+      "text": "Welcher Befehl zeigt an, welche Dateien das installierte Debian-Paket `openssh-client` enthält?",
+      "options": [
+        "`dpkg -S openssh-client`",
+        "`dpkg -l openssh-client`",
+        "`dpkg -L openssh-client`",
+        "`dpkg -i openssh-client`"
+      ],
+      "correct": 2,
+      "explanation": "`-L` listet die Dateien, `-S` sucht das Paket zu einer Datei, `-l` zeigt Status und Version.",
+      "topic": "Paketverwaltung"
+    },
+    {
+      "id": "q29",
+      "type": "short",
+      "text": "Mit welchem Befehl installieren Sie auf einem Fedora-/Rocky-Linux-System das Paket `htop` aus den Repositories? (vollständiger Befehl)",
+      "accept": [
+        "re:(sudo\\s+)?(dnf|yum)\\s+(-y\\s+)?install\\s+(-y\\s+)?htop"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "dnf ist der Nachfolger von yum; die Syntax ist weitgehend gleich.",
+      "topic": "Paketverwaltung"
+    },
+    {
+      "id": "q30",
+      "type": "single",
+      "text": "In welcher Datei steht der Hostname des Rechners?",
+      "options": [
+        "`/etc/hosts`",
+        "`/etc/hostname`",
+        "`/etc/nsswitch.conf`",
+        "`/etc/resolv.conf`"
+      ],
+      "correct": 1,
+      "explanation": "Ändern komfortabel mit `hostnamectl set-hostname neuername`.",
+      "topic": "Netzwerk"
+    },
+    {
+      "id": "q31",
+      "type": "single",
+      "text": "Mit welchem Kommandozeilenwerkzeug steuern Sie den NetworkManager?",
+      "options": [
+        "`netstat`",
+        "`nmctl`",
+        "`ipconfig`",
+        "`nmcli`"
+      ],
+      "correct": 3,
+      "explanation": "Z.B. `nmcli device status`, `nmcli connection show`, `nmcli connection up name`.",
+      "topic": "Netzwerk"
+    },
+    {
+      "id": "q32",
+      "type": "single",
+      "text": "Welcher Befehl erzeugt ein neues SSH-Schlüsselpaar?",
+      "options": [
+        "`ssh-keygen`",
+        "`ssh-copy-id`",
+        "`ssh-add`",
+        "`sshd -k`"
+      ],
+      "correct": 0,
+      "explanation": "Z.B. `ssh-keygen -t ed25519`. `ssh-add` lädt einen Schlüssel in den ssh-agent.",
+      "topic": "SSH"
+    },
+    {
+      "id": "q33",
+      "type": "text",
+      "topic": "Prozesse",
+      "points": 3,
+      "text": "Was ist der Unterschied zwischen den Signalen SIGTERM und SIGKILL? Wann verwenden Sie welches, und wie senden Sie sie?",
+      "modelAnswer": "**SIGTERM** (15) ist das Standardsignal von `kill`. Es bittet den Prozess, sich zu beenden. Der Prozess kann das Signal **abfangen**, aufräumen (Dateien schließen, temporäre Dateien löschen) und sich **sauber** beenden – oder es ignorieren.\n**SIGKILL** (9) kann weder abgefangen noch ignoriert werden. Der Kernel beendet den Prozess **sofort**, ohne dass er aufräumen kann (Datenverlust möglich).\nDeshalb zuerst `kill PID` (= `kill -15 PID`) und nur, wenn der Prozess nicht reagiert, `kill -9 PID` (= `kill -KILL PID`). Nach Namen: `killall` bzw. `pkill`.",
+      "keywords": [
+        "15",
+        "9",
+        "abfangen|ignorier",
+        "aufräumen|sauber",
+        "sofort|Kernel",
+        "kill -9|-KILL|-SIGKILL"
+      ]
+    },
+    {
+      "id": "q34",
+      "type": "text",
+      "topic": "SSH",
+      "points": 3,
+      "text": "Beschreiben Sie die Schritte, mit denen Sie sich künftig ohne Passwort per SSH-Schlüssel als `anna` an `srv01` anmelden können. Was liegt danach wo?",
+      "modelAnswer": "1. Auf dem eigenen Rechner ein Schlüsselpaar erzeugen: `ssh-keygen` (z.B. `ssh-keygen -t ed25519`), optional mit Passphrase. Ergebnis: **privater** Schlüssel `~/.ssh/id_ed25519` und **öffentlicher** Schlüssel `~/.ssh/id_ed25519.pub`.\n2. Den öffentlichen Schlüssel auf den Server übertragen: `ssh-copy-id anna@srv01` (einmalig mit Passwort). Er wird an `~/.ssh/authorized_keys` von anna auf srv01 angehängt.\n3. Anmelden mit `ssh anna@srv01` – ohne Passwort (ggf. mit der Passphrase des Schlüssels).\nDer private Schlüssel bleibt immer auf dem Client und wird nie weitergegeben (Rechte 600).",
+      "keywords": [
+        "ssh-keygen",
+        "ssh-copy-id",
+        "authorized_keys",
+        "privat",
+        "öffentlich|.pub"
+      ]
+    }
+  ]
+}

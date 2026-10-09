@@ -1,0 +1,14 @@
+# Whitelist: nur die Plattform wird versioniert.
+# Kursunterlagen (unterlagen/, folien/, buecher/, themenliste.txt) bleiben lokal.
+/*
+!/.gitignore
+!/README.md
+!/CLAUDE.md
+!/pruefung/
+
+# eigene Versuche bleiben lokal
+/pruefung/attempts/
+
+.DS_Store
+__pycache__/
+*.tmp

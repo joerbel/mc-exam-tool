@@ -1,0 +1,502 @@
+{
+  "title": "Probeprüfung 2",
+  "description": "Alle Kursthemen, davon 2 Freitextfragen",
+  "durationMinutes": 60,
+  "passPercent": 60,
+  "questions": [
+    {
+      "id": "q01",
+      "type": "multi",
+      "text": "Welche Aussagen zur GNU General Public License (GPL) sind richtig?",
+      "options": [
+        "GPL-Code darf in geschlossene, proprietäre Software übernommen werden, ohne den Quellcode offenzulegen.",
+        "Wer GPL-Software weitergibt, muss auch den Quellcode zugänglich machen.",
+        "Veränderte Versionen dürfen nur wieder unter der GPL verbreitet werden (Copyleft).",
+        "GPL-Software darf nicht gegen Geld verkauft werden."
+      ],
+      "correct": [
+        1,
+        2
+      ],
+      "explanation": "Das Copyleft sorgt dafür, dass die Freiheiten erhalten bleiben. Verkaufen ist ausdrücklich erlaubt („frei“ wie in Freiheit, nicht wie in Freibier).",
+      "topic": "Geschichte & Lizenzen"
+    },
+    {
+      "id": "q02",
+      "type": "single",
+      "text": "Sie befinden sich in `/home/anna/docs`. Welcher **relative** Pfad zeigt auf `/home/anna/bilder`?",
+      "options": [
+        "`.bilder`",
+        "`./bilder`",
+        "`../bilder`",
+        "`/home/anna/bilder`"
+      ],
+      "correct": 2,
+      "explanation": "`..` ist das übergeordnete Verzeichnis. Pfade, die mit `/` beginnen, sind absolut.",
+      "topic": "Shell-Grundlagen"
+    },
+    {
+      "id": "q03",
+      "type": "short",
+      "text": "Mit welchem Befehl verfolgen Sie fortlaufend, welche Zeilen neu an `/var/log/syslog` angehängt werden? (vollständiger Befehl)",
+      "accept": [
+        "re:tail\\s+(-f|-F|--follow)\\s+/var/log/syslog"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "`tail -f` (follow) bleibt geöffnet und zeigt neue Zeilen sofort an. Beenden mit Strg+C.",
+      "topic": "Dateien anzeigen & Textwerkzeuge"
+    },
+    {
+      "id": "q04",
+      "type": "multi",
+      "text": "Welche Aussagen zu `env` und `set` sind richtig?",
+      "options": [
+        "`set` zeigt zusätzlich die nicht exportierten Shellvariablen (und Funktionen) an.",
+        "`set` ohne Argumente exportiert alle Variablen.",
+        "`env` zeigt nur die Variablen des Benutzers root an.",
+        "`env` zeigt nur die exportierten Umgebungsvariablen an."
+      ],
+      "correct": [
+        0,
+        3
+      ],
+      "explanation": "`printenv` verhält sich wie `env`. Shellvariablen ohne export sind „privat“ für die aktuelle Shell.",
+      "topic": "Variablen & Umgebung"
+    },
+    {
+      "id": "q05",
+      "type": "short",
+      "text": "Mit welchem Befehl finden Sie heraus, ob `ls` ein Alias, ein Builtin oder ein externes Kommando ist?",
+      "accept": [
+        "type",
+        "re:type\\s+(-a\\s+)?ls"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "`type ls` zeigt z.B. „ls is aliased to `ls --color=auto`“. `which` findet nur externe Programme im PATH.",
+      "topic": "Befehlstypen"
+    },
+    {
+      "id": "q06",
+      "type": "single",
+      "text": "Sie sind in vim im Einfügemodus. Wie kommen Sie zurück in den Normal- bzw. Kommandomodus?",
+      "options": [
+        "`:q` eingeben",
+        "Esc drücken",
+        "Enter drücken",
+        "`i` drücken"
+      ],
+      "correct": 1,
+      "explanation": "Aus dem Einfügemodus geht es immer mit Esc zurück in den Normalmodus; von dort mit `:` in den Befehlszeilen-(ex-)Modus.",
+      "topic": "Editoren (vim, nano)"
+    },
+    {
+      "id": "q07",
+      "type": "single",
+      "text": "Mit welchem Befehl sollte die Datei `/etc/sudoers` bearbeitet werden?",
+      "options": [
+        "`visudo`",
+        "`usermod --sudo`",
+        "`sudoedit --config`",
+        "`passwd -s`"
+      ],
+      "correct": 0,
+      "explanation": "visudo sperrt die Datei gegen gleichzeitiges Bearbeiten und prüft vor dem Speichern die Syntax – ein Fehler könnte sonst sudo unbrauchbar machen.",
+      "topic": "sudo & su"
+    },
+    {
+      "id": "q08",
+      "type": "short",
+      "text": "Mit welchem Befehl zeigen Sie die Manpage zum **Dateiformat** von `/etc/passwd` an (nicht die zum Befehl passwd)?",
+      "accept": [
+        "man 5 passwd",
+        "man passwd.5",
+        "re:man\\s+-s\\s*5\\s+passwd"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "Abschnitt 5 enthält Dateiformate. `man passwd` würde Abschnitt 1 (den Befehl) anzeigen.",
+      "topic": "Hilfe & Dokumentation"
+    },
+    {
+      "id": "q09",
+      "type": "single",
+      "text": "Mit welcher Tastenkombination durchsuchen Sie die Befehlsgeschichte rückwärts nach einem Suchbegriff?",
+      "options": [
+        "Strg+Z",
+        "Strg+R",
+        "Strg+H",
+        "Strg+L"
+      ],
+      "correct": 1,
+      "explanation": "Nach Strg+R tippt man einen Teil des Befehls; weiteres Strg+R springt zum nächstälteren Treffer, Enter führt aus.",
+      "topic": "History"
+    },
+    {
+      "id": "q10",
+      "type": "single",
+      "text": "Die Variable `USER` enthält `anna`. Was gibt `echo \"Ich bin $USER\"` aus?",
+      "options": [
+        "`\"Ich bin anna\"`",
+        "`Ich bin`",
+        "`Ich bin $USER`",
+        "`Ich bin anna`"
+      ],
+      "correct": 3,
+      "explanation": "In doppelten Anführungszeichen werden Variablen (und `$(...)`) ersetzt, Platzhalter wie `*` aber nicht.",
+      "topic": "Sonderzeichen & Quoting"
+    },
+    {
+      "id": "q11",
+      "type": "multi",
+      "text": "Welche Befehlszeilen schreiben **sowohl** die normale Ausgabe **als auch** die Fehlermeldungen in `log.txt`?",
+      "options": [
+        "`befehl | tee log.txt`",
+        "`befehl &> log.txt`",
+        "`befehl > log.txt 2>&1`",
+        "`befehl 2>&1 > log.txt`"
+      ],
+      "correct": [
+        1,
+        2
+      ],
+      "explanation": "Umleitungen werden von links nach rechts ausgewertet: Bei `2>&1 > log.txt` zeigt stderr noch auf den Bildschirm, als es dupliziert wird. `tee` bekommt nur stdout.",
+      "topic": "Ein-/Ausgabe-Umleitung & Pipes"
+    },
+    {
+      "id": "q12",
+      "type": "single",
+      "text": "Welcher Exit-Status bedeutet unter Linux, dass ein Befehl erfolgreich war?",
+      "options": [
+        "0",
+        "1",
+        "127",
+        "255"
+      ],
+      "correct": 0,
+      "explanation": "Jeder Wert ungleich 0 bedeutet einen Fehler. 127 heißt z.B. „command not found“.",
+      "topic": "Ein-/Ausgabe-Umleitung & Pipes"
+    },
+    {
+      "id": "q13",
+      "type": "single",
+      "text": "Anna ist Mitglied der Zusatzgruppen `audio` und `video`. Der Admin führt `usermod -G entwickler anna` aus. Was gilt danach?",
+      "options": [
+        "Anna ist nur noch in der Zusatzgruppe `entwickler`",
+        "Der Befehl schlägt fehl, weil `-a` fehlt",
+        "Anna ist in `audio`, `video` und `entwickler`",
+        "`entwickler` ist jetzt Annas primäre Gruppe"
+      ],
+      "correct": 0,
+      "explanation": "`-G` ersetzt die Liste der Zusatzgruppen. Zum Hinzufügen braucht man `usermod -aG entwickler anna` (append).",
+      "topic": "Benutzer & Gruppen"
+    },
+    {
+      "id": "q14",
+      "type": "multi",
+      "text": "Welche Befehle zeigen an, in welchen Gruppen der Benutzer `anna` Mitglied ist?",
+      "options": [
+        "`groups anna`",
+        "`id anna`",
+        "`whoami anna`",
+        "`passwd -g anna`"
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "explanation": "`id` zeigt UID, GID und alle Gruppen; `groups` nur die Gruppennamen.",
+      "topic": "Benutzer & Gruppen"
+    },
+    {
+      "id": "q15",
+      "type": "single",
+      "text": "Die umask ist `027`. Welche Rechte bekommt eine neu angelegte **Datei**?",
+      "options": [
+        "`rw-rw----`",
+        "`rw-r--r--`",
+        "`rwxr-x---`",
+        "`rw-r-----`"
+      ],
+      "correct": 3,
+      "explanation": "Dateien starten bei 666, Verzeichnisse bei 777. Die umask nimmt Rechte weg: 666 − 027 → 640.",
+      "topic": "Dateirechte"
+    },
+    {
+      "id": "q16",
+      "type": "single",
+      "text": "Welche Rechte hat eine Datei nach `chmod 644 datei`?",
+      "options": [
+        "`rw-rw-r--`",
+        "`rw-r--r--`",
+        "`r--rw-rw-`",
+        "`rwxr--r--`"
+      ],
+      "correct": 1,
+      "explanation": "6 = rw-, 4 = r--. Das ist der übliche Standard für normale Dateien.",
+      "topic": "Dateirechte"
+    },
+    {
+      "id": "q17",
+      "type": "short",
+      "text": "Mit welchem Befehl geben Sie der Benutzerin `anna` per ACL Lese- und Schreibrechte auf `bericht.txt`?",
+      "accept": [
+        "re:setfacl\\s+-m\\s+(u|user):anna:(rw-?|wr)\\s+bericht\\.txt"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "`-m` (modify) fügt einen Eintrag hinzu bzw. ändert ihn, `-x` entfernt ihn, `-b` entfernt alle ACL-Einträge.",
+      "topic": "Spezialrechte & ACLs"
+    },
+    {
+      "id": "q18",
+      "type": "multi",
+      "text": "Welche Aussagen zu Spezialrechten sind richtig?",
+      "options": [
+        "`chmod o+t verzeichnis` setzt das Sticky Bit.",
+        "`find / -perm -4000` findet Dateien mit gesetztem SUID-Bit.",
+        "Ein großes `S` wie in `rwSr--r--` bedeutet: SUID gesetzt **und** Ausführungsrecht vorhanden.",
+        "Das Sticky Bit wird mit der Oktalziffer 4 gesetzt."
+      ],
+      "correct": [
+        0,
+        1
+      ],
+      "explanation": "Ein großes `S` bzw. `T` zeigt, dass das Spezialbit gesetzt ist, das zugehörige x-Recht aber fehlt. Sticky = 1, SGID = 2, SUID = 4.",
+      "topic": "Spezialrechte & ACLs"
+    },
+    {
+      "id": "q19",
+      "type": "multi",
+      "text": "Welche Aussagen zu Hardlinks sind richtig?",
+      "options": [
+        "Hardlinks können über Dateisystemgrenzen hinweg angelegt werden.",
+        "Hardlinks werden mit `ln -s` angelegt.",
+        "Wird der ursprüngliche Name gelöscht, bleiben die Daten über den Hardlink erreichbar.",
+        "Ein Hardlink verweist auf dieselbe Inode wie das Original."
+      ],
+      "correct": [
+        2,
+        3
+      ],
+      "explanation": "Hardlinks: `ln ziel name`, nur im selben Dateisystem, nicht für Verzeichnisse. Der Linkzähler in `ls -l` zeigt die Anzahl der Namen.",
+      "topic": "Dateitypen & Links"
+    },
+    {
+      "id": "q20",
+      "type": "single",
+      "text": "Welche Option von `ls` zeigt die Inode-Nummern an?",
+      "options": [
+        "`-I`",
+        "`-n`",
+        "`-i`",
+        "`-h`"
+      ],
+      "correct": 2,
+      "explanation": "Zwei Hardlinks haben dieselbe Inode-Nummer. `-n` zeigt numerische UIDs/GIDs, `-h` lesbare Größen.",
+      "topic": "Dateitypen & Links"
+    },
+    {
+      "id": "q21",
+      "type": "single",
+      "text": "Welches Verzeichnis ist ein virtuelles Dateisystem mit Informationen über laufende Prozesse (je PID ein Unterverzeichnis)?",
+      "options": [
+        "`/opt`",
+        "`/srv`",
+        "`/boot`",
+        "`/proc`"
+      ],
+      "correct": 3,
+      "explanation": "Z.B. `/proc/1` für systemd oder `/proc/cpuinfo` für CPU-Informationen. Der Inhalt existiert nur im Arbeitsspeicher.",
+      "topic": "Dateisystem-Hierarchie"
+    },
+    {
+      "id": "q22",
+      "type": "single",
+      "text": "Welcher Befehl erzeugt ein ext4-Dateisystem auf `/dev/sdb1`?",
+      "options": [
+        "`mount -t ext4 /dev/sdb1`",
+        "`format /dev/sdb1`",
+        "`mkfs.ext4 /dev/sdb1`",
+        "`fdisk -t ext4 /dev/sdb1`"
+      ],
+      "correct": 2,
+      "explanation": "Gleichbedeutend: `mkfs -t ext4 /dev/sdb1`. Partitionieren (fdisk) und Formatieren (mkfs) sind getrennte Schritte.",
+      "topic": "Partitionierung"
+    },
+    {
+      "id": "q23",
+      "type": "single",
+      "text": "Welcher Befehl listet die Geräte am PCI-Bus auf (z.B. Grafik- und Netzwerkkarte)?",
+      "options": [
+        "`lscpu`",
+        "`lsusb`",
+        "`lsblk`",
+        "`lspci`"
+      ],
+      "correct": 3,
+      "explanation": "`lscpu` zeigt Informationen zum Prozessor.",
+      "topic": "Hardware"
+    },
+    {
+      "id": "q24",
+      "type": "single",
+      "text": "Sie stecken einen USB-Stick ein und möchten **live** sehen, welche Meldungen dabei entstehen. Welcher Befehl ist geeignet?",
+      "options": [
+        "`journalctl -n`",
+        "`lsusb -n`",
+        "`journalctl -b`",
+        "`journalctl -f`"
+      ],
+      "correct": 3,
+      "explanation": "`-f` (follow) zeigt neue Einträge sofort an – wie `tail -f`.",
+      "topic": "Logs (journalctl)"
+    },
+    {
+      "id": "q25",
+      "type": "single",
+      "text": "Ein Programm im Vordergrund wurde mit Strg+Z angehalten. Wie lassen Sie es im **Hintergrund** weiterlaufen?",
+      "options": [
+        "`jobs`",
+        "`bg`",
+        "`fg`",
+        "`nohup`"
+      ],
+      "correct": 1,
+      "explanation": "`bg` setzt den gestoppten Job im Hintergrund fort, `fg` holt ihn in den Vordergrund, `jobs` listet die Jobs der Shell.",
+      "topic": "Prozesse"
+    },
+    {
+      "id": "q26",
+      "type": "single",
+      "text": "Welcher Befehl beendet alle Prozesse mit dem Namen `firefox`?",
+      "options": [
+        "`killall firefox`",
+        "`kill firefox`",
+        "`kill -all firefox`",
+        "`ps -k firefox`"
+      ],
+      "correct": 0,
+      "explanation": "`kill` erwartet PIDs. Nach Namen arbeiten `killall` und `pkill`.",
+      "topic": "Prozesse"
+    },
+    {
+      "id": "q27",
+      "type": "single",
+      "text": "Welcher Befehl zeigt an, ob der Dienst `cron` läuft, inklusive der letzten Logzeilen?",
+      "options": [
+        "`systemctl list cron`",
+        "`systemctl show-log cron`",
+        "`systemctl info cron`",
+        "`systemctl status cron`"
+      ],
+      "correct": 3,
+      "explanation": "Kurzabfragen ohne Details: `systemctl is-active cron` und `systemctl is-enabled cron`.",
+      "topic": "systemd & Dienste"
+    },
+    {
+      "id": "q28",
+      "type": "single",
+      "text": "In welcher Reihenfolge läuft der Bootvorgang ab?",
+      "options": [
+        "Firmware (BIOS/UEFI) → Bootloader (GRUB) → Kernel mit initramfs → systemd",
+        "Bootloader → Firmware → systemd → Kernel",
+        "Firmware → systemd → Kernel → Bootloader",
+        "Kernel → Firmware → Bootloader → systemd"
+      ],
+      "correct": 0,
+      "explanation": "Die initramfs enthält Treiber, die der Kernel braucht, um das eigentliche Root-Dateisystem einzuhängen.",
+      "topic": "Bootprozess"
+    },
+    {
+      "id": "q29",
+      "type": "single",
+      "text": "Zu welchem RPM-Paket gehört die Datei `/usr/bin/ssh`? Welcher Befehl beantwortet das?",
+      "options": [
+        "`rpm -e /usr/bin/ssh`",
+        "`rpm -qf /usr/bin/ssh`",
+        "`rpm -qi /usr/bin/ssh`",
+        "`rpm -ql /usr/bin/ssh`"
+      ],
+      "correct": 1,
+      "explanation": "`-q` query, `-f` file. Debian-Gegenstück: `dpkg -S /usr/bin/ssh`.",
+      "topic": "Paketverwaltung"
+    },
+    {
+      "id": "q30",
+      "type": "single",
+      "text": "Wozu dienen die GPG-Schlüssel von Paket-Repositories?",
+      "options": [
+        "Damit die Pakete verschlüsselt übertragen werden und niemand sie lesen kann",
+        "Zur Anmeldung am Repository mit einem Passwort",
+        "Zum Komprimieren der Pakete",
+        "Damit Echtheit und Unverändertheit der Pakete bzw. Paketlisten geprüft werden können (Signaturen)"
+      ],
+      "correct": 3,
+      "explanation": "Pakete und Kataloge werden vom Anbieter signiert; der Paketmanager prüft die Signatur mit dem öffentlichen Schlüssel.",
+      "topic": "Paketverwaltung"
+    },
+    {
+      "id": "q31",
+      "type": "single",
+      "text": "Welche Datei ordnet Hostnamen lokal IP-Adressen zu, ohne einen DNS-Server zu befragen?",
+      "options": [
+        "`/etc/networks.conf`",
+        "`/etc/hostname`",
+        "`/etc/hosts`",
+        "`/etc/resolv.conf`"
+      ],
+      "correct": 2,
+      "explanation": "Z.B. `127.0.0.1 localhost`. Die Reihenfolge (erst hosts, dann DNS) steht in `/etc/nsswitch.conf`.",
+      "topic": "Netzwerk"
+    },
+    {
+      "id": "q32",
+      "type": "single",
+      "text": "Wie melden Sie sich als `anna` am Server `srv01` an, dessen SSH-Dienst auf Port 2222 lauscht?",
+      "options": [
+        "`ssh --port=2222 srv01 anna`",
+        "`ssh -P 2222 anna@srv01`",
+        "`ssh anna@srv01:2222`",
+        "`ssh -p 2222 anna@srv01`"
+      ],
+      "correct": 3,
+      "explanation": "Achtung: Bei `scp` heißt die Option für den Port `-P` (groß), bei `ssh` `-p` (klein).",
+      "topic": "SSH"
+    },
+    {
+      "id": "q33",
+      "type": "text",
+      "topic": "Dateitypen & Links",
+      "points": 3,
+      "text": "Erklären Sie den Unterschied zwischen einem Hardlink und einem symbolischen Link (Softlink). Wie legt man jeweils einen an?",
+      "modelAnswer": "Ein **Hardlink** (`ln ziel name`) ist ein weiterer Verzeichniseintrag (Name) für dieselbe **Inode**. Alle Namen sind gleichwertig; die Daten bleiben erhalten, solange noch ein Name existiert (Linkzähler). Hardlinks funktionieren nur innerhalb desselben Dateisystems und nicht für Verzeichnisse.\nEin **Softlink** (`ln -s ziel name`) ist eine eigene kleine Datei (Typ `l`), die nur den **Pfad** zum Ziel enthält. Er kann über Dateisystemgrenzen hinweg und auf Verzeichnisse zeigen. Wird das Ziel gelöscht, zeigt der Link ins Leere.",
+      "keywords": [
+        "Inode",
+        "Pfad",
+        "Dateisystem|Partition",
+        "Verzeichnis",
+        "ins Leere|ungültig|verwaist|kaputt|dangling",
+        "ln -s"
+      ]
+    },
+    {
+      "id": "q34",
+      "type": "text",
+      "topic": "Ein-/Ausgabe-Umleitung & Pipes",
+      "points": 3,
+      "text": "Erklären Sie Schritt für Schritt, was die folgende Befehlszeile bewirkt. Wohin gelangen eventuelle Fehlermeldungen von `sort`?",
+      "modelAnswer": "1. `sort -t: -k3 -n /etc/passwd` sortiert die Zeilen von /etc/passwd **numerisch** (`-n`) nach dem **3. Feld** (`-k3`, die UID); Feldtrenner ist der Doppelpunkt (`-t:`).\n2. Die **Pipe** `|` leitet die Standardausgabe von sort an die Standardeingabe von tail weiter.\n3. `tail -n 3` gibt nur die **letzten 3 Zeilen** aus – also die drei Benutzer mit den höchsten UIDs.\n4. `> hohe_uids.txt` schreibt die Standardausgabe von tail in die Datei (eine vorhandene Datei wird überschrieben).\n5. `2> fehler.txt` leitet nur die Fehlerausgabe **von tail** in fehler.txt.\nFehlermeldungen von **sort** werden nicht umgeleitet und erscheinen auf dem **Bildschirm**, denn eine Umleitung gilt nur für den Befehl, bei dem sie steht.",
+      "keywords": [
+        "UID|3. Feld|dritte Feld|drittes Feld",
+        "numerisch",
+        "Pipe|weitergeleitet|Standardeingabe",
+        "letzten 3|letzte drei|letzten drei|höchsten",
+        "überschreib",
+        "Bildschirm|Terminal"
+      ],
+      "code": "sort -t: -k3 -n /etc/passwd | tail -n 3 > hohe_uids.txt 2> fehler.txt"
+    }
+  ]
+}

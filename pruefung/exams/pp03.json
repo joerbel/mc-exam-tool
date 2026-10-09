@@ -1,0 +1,495 @@
+{
+  "title": "Probeprüfung 3",
+  "description": "Alle Kursthemen, davon 2 Freitextfragen",
+  "durationMinutes": 60,
+  "passPercent": 60,
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single",
+      "text": "Welches Lehrbetriebssystem schrieb Andrew S. Tanenbaum, das Linus Torvalds als Ausgangspunkt diente?",
+      "options": [
+        "System V",
+        "BSD",
+        "Minix",
+        "Multics"
+      ],
+      "correct": 2,
+      "explanation": "Minix (1987) ist ein kleines Unix-ähnliches System mit Mikrokernel. Bekannt ist die Tanenbaum-Torvalds-Debatte über Mikrokernel vs. monolithischen Kernel.",
+      "topic": "Geschichte & Lizenzen"
+    },
+    {
+      "id": "q02",
+      "type": "single",
+      "text": "Das Verzeichnis `projekt` enthält noch Dateien. Mit welchem Befehl löschen Sie es samt Inhalt?",
+      "options": [
+        "`rmdir projekt`",
+        "`rm projekt`",
+        "`rmdir -f projekt`",
+        "`rm -r projekt`"
+      ],
+      "correct": 3,
+      "explanation": "`rmdir` löscht nur leere Verzeichnisse. `rm -r` löscht rekursiv.",
+      "topic": "Shell-Grundlagen"
+    },
+    {
+      "id": "q03",
+      "type": "single",
+      "text": "Sie betrachten eine Datei mit `less`. Wie suchen Sie **vorwärts** nach dem Wort `error`?",
+      "options": [
+        "`/error` eingeben und Enter drücken",
+        "`:find error` eingeben",
+        "Strg+F und dann `error` eingeben",
+        "`?error` eingeben und Enter drücken"
+      ],
+      "correct": 0,
+      "explanation": "`/muster` sucht vorwärts, `?muster` rückwärts, `n` springt zum nächsten Treffer, `q` beendet less.",
+      "topic": "Dateien anzeigen & Textwerkzeuge"
+    },
+    {
+      "id": "q04",
+      "type": "single",
+      "text": "Welche Variablenzuweisung ist in der Bash korrekt?",
+      "options": [
+        "`$NAME=Anna`",
+        "`NAME = Anna`",
+        "`NAME=Anna`",
+        "`set NAME Anna`"
+      ],
+      "correct": 2,
+      "explanation": "Um das Gleichheitszeichen dürfen keine Leerzeichen stehen, und bei der Zuweisung steht kein `$`. Das `$` braucht man nur zum Auslesen.",
+      "topic": "Variablen & Umgebung"
+    },
+    {
+      "id": "q05",
+      "type": "single",
+      "text": "Sie haben `alias rm='rm -i'` definiert. Wie rufen Sie **einmalig** das echte `rm` ohne den Alias auf?",
+      "options": [
+        "`unrm datei`",
+        "`\\rm datei`",
+        "`alias -rm datei`",
+        "`rm --noalias datei`"
+      ],
+      "correct": 1,
+      "explanation": "Ein vorangestellter Backslash (oder `command rm`) umgeht den Alias. Dauerhaft entfernen: `unalias rm`.",
+      "topic": "Befehlstypen"
+    },
+    {
+      "id": "q06",
+      "type": "single",
+      "text": "Mit welcher Tastenkombination beenden Sie den Editor nano?",
+      "options": [
+        "Esc und dann `:q`",
+        "Strg+C",
+        "Strg+Q",
+        "Strg+X"
+      ],
+      "correct": 3,
+      "explanation": "In der Hilfeleiste von nano steht `^` für Strg. Strg+O speichert („Write Out“), Strg+X beendet (fragt ggf. nach dem Speichern).",
+      "topic": "Editoren (vim, nano)"
+    },
+    {
+      "id": "q07",
+      "type": "single",
+      "text": "Was ist der Unterschied zwischen `su` und `su -`?",
+      "options": [
+        "Es gibt keinen Unterschied",
+        "`su -` meldet den aktuellen Benutzer ab",
+        "`su -` startet eine Login-Shell mit der Umgebung und dem Heimatverzeichnis des Zielbenutzers",
+        "`su` ohne Minus funktioniert nur für root"
+      ],
+      "correct": 2,
+      "explanation": "Ohne `-` bleiben z.B. PATH und Arbeitsverzeichnis des alten Benutzers erhalten, was zu Überraschungen führen kann.",
+      "topic": "sudo & su"
+    },
+    {
+      "id": "q08",
+      "type": "single",
+      "text": "Welcher Befehl durchsucht die Kurzbeschreibungen aller Manpages nach dem Begriff `partition`?",
+      "options": [
+        "`help partition`",
+        "`man partition`",
+        "`man -k partition`",
+        "`man -f partition`"
+      ],
+      "correct": 2,
+      "explanation": "`man -k` entspricht `apropos` (Stichwortsuche). `man -f` entspricht `whatis` und sucht nur exakte Seitennamen.",
+      "topic": "Hilfe & Dokumentation"
+    },
+    {
+      "id": "q09",
+      "type": "single",
+      "text": "Was bewirkt `!$` in einer Befehlszeile?",
+      "options": [
+        "Es führt den letzten Befehl mit root-Rechten aus",
+        "Es setzt das letzte Argument des vorherigen Befehls ein",
+        "Es zeigt den Exit-Status des letzten Befehls an",
+        "Es gibt die PID der aktuellen Shell aus"
+      ],
+      "correct": 1,
+      "explanation": "Beispiel: `mkdir projekt` und danach `cd !$`. Gleiches erreicht man interaktiv mit Alt+. (Punkt).",
+      "topic": "History"
+    },
+    {
+      "id": "q10",
+      "type": "single",
+      "text": "Welche Dateinamen passen auf das Muster `datei?.txt`?",
+      "options": [
+        "`datei1.txt`, `dateiA.txt` und `datei10.txt`",
+        "`datei1.txt` und `dateiA.txt`, aber nicht `datei10.txt`",
+        "Nur eine Datei, die wörtlich `datei?.txt` heißt",
+        "`datei.txt` und `datei1.txt`"
+      ],
+      "correct": 1,
+      "explanation": "`?` steht für genau ein beliebiges Zeichen, `*` für beliebig viele (auch keins), `[abc]` für eines der angegebenen Zeichen.",
+      "topic": "Sonderzeichen & Quoting"
+    },
+    {
+      "id": "q11",
+      "type": "multi",
+      "text": "Welche Aussagen zu `tee` sind richtig?",
+      "options": [
+        "`tee` schreibt seine Eingabe in eine Datei und gibt sie zugleich auf der Standardausgabe aus.",
+        "`tee` fängt automatisch auch die Fehlerausgabe ab.",
+        "`tee` kann nur am Anfang einer Pipe stehen.",
+        "`tee -a` hängt an die Datei an, statt sie zu überschreiben."
+      ],
+      "correct": [
+        0,
+        3
+      ],
+      "explanation": "Typisch: `befehl | tee ausgabe.txt | less` – wie ein T-Stück in einer Rohrleitung.",
+      "topic": "Ein-/Ausgabe-Umleitung & Pipes"
+    },
+    {
+      "id": "q12",
+      "type": "single",
+      "text": "In welcher Datei stehen die (gehashten) Passwörter der Benutzer?",
+      "options": [
+        "`/etc/shadow`",
+        "`/etc/group`",
+        "`/etc/login.defs`",
+        "`/etc/passwd`"
+      ],
+      "correct": 0,
+      "explanation": "/etc/shadow ist nur für root lesbar. /etc/passwd muss für alle lesbar sein (z.B. für `ls -l`, um Namen anzuzeigen).",
+      "topic": "Benutzer & Gruppen"
+    },
+    {
+      "id": "q13",
+      "type": "single",
+      "text": "Aus welchem Verzeichnis werden beim Anlegen eines Benutzers mit `useradd -m` Vorlagedateien (z.B. `.bashrc`) in das neue Heimatverzeichnis kopiert?",
+      "options": [
+        "`/etc/skel`",
+        "`/etc/default`",
+        "`/home/template`",
+        "`/usr/share/skel`"
+      ],
+      "correct": 0,
+      "explanation": "skel = Skelett. Standardwerte für useradd stehen in `/etc/default/useradd` und `/etc/login.defs`.",
+      "topic": "Benutzer & Gruppen"
+    },
+    {
+      "id": "q14",
+      "type": "multi",
+      "text": "Welche Rechte benötigt ein Benutzer an einem **Verzeichnis**, um darin eine neue Datei anlegen zu können?",
+      "options": [
+        "Schreibrecht (w)",
+        "Sticky Bit (t)",
+        "Leserecht (r)",
+        "Ausführungsrecht (x)"
+      ],
+      "correct": [
+        0,
+        3
+      ],
+      "explanation": "Neue Einträge anlegen oder löschen braucht w am Verzeichnis, und x, um überhaupt auf das Verzeichnis zugreifen zu können.",
+      "topic": "Dateirechte"
+    },
+    {
+      "id": "q15",
+      "type": "single",
+      "text": "Welche umask führt dazu, dass neue **Verzeichnisse** die Rechte `rwxr-xr-x` erhalten?",
+      "options": [
+        "022",
+        "644",
+        "755",
+        "002"
+      ],
+      "correct": 0,
+      "explanation": "777 − 022 = 755. Dateien bekommen bei dieser umask 644.",
+      "topic": "Dateirechte"
+    },
+    {
+      "id": "q16",
+      "type": "single",
+      "text": "Warum hat `/usr/bin/passwd` das SUID-Bit gesetzt?",
+      "options": [
+        "Damit normale Benutzer beim Ändern ihres Passworts mit root-Rechten in `/etc/shadow` schreiben können",
+        "Damit das Programm schneller startet",
+        "Damit das Programm nicht gelöscht werden kann",
+        "Damit nur root den Befehl ausführen kann"
+      ],
+      "correct": 0,
+      "explanation": "SUID: Das Programm läuft mit den Rechten des Eigentümers der Programmdatei (hier root), nicht mit denen des Aufrufers.",
+      "topic": "Spezialrechte & ACLs"
+    },
+    {
+      "id": "q17",
+      "type": "single",
+      "text": "Welcher Befehl zeigt die ACL der Datei `bericht.txt` an?",
+      "options": [
+        "`setfacl -l bericht.txt`",
+        "`getfacl bericht.txt`",
+        "`chmod --acl bericht.txt`",
+        "`ls -acl bericht.txt`"
+      ],
+      "correct": 1,
+      "explanation": "getfacl zeigt Eigentümer, Gruppe, die normalen Rechte und alle zusätzlichen Einträge (inkl. mask).",
+      "topic": "Spezialrechte & ACLs"
+    },
+    {
+      "id": "q18",
+      "type": "single",
+      "text": "Was passiert mit einem symbolischen Link, wenn seine Zieldatei gelöscht wird?",
+      "options": [
+        "Der Link bleibt bestehen, zeigt aber ins Leere",
+        "Das Löschen der Zieldatei wird verhindert",
+        "Der Link enthält weiterhin den Dateiinhalt",
+        "Der Link wird automatisch mitgelöscht"
+      ],
+      "correct": 0,
+      "explanation": "Ein Symlink speichert nur den Pfad zum Ziel. Ohne Ziel ist er ein „verwaister“ (dangling) Link.",
+      "topic": "Dateitypen & Links"
+    },
+    {
+      "id": "q19",
+      "type": "short",
+      "text": "Mit welchem Befehl legen Sie einen **symbolischen** Link namens `aktuell` an, der auf `version-2.3` zeigt? (vollständiger Befehl)",
+      "accept": [
+        "ln -s version-2.3 aktuell",
+        "ln --symbolic version-2.3 aktuell"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "Reihenfolge wie bei cp: erst das Ziel, dann der Name des neuen Links.",
+      "topic": "Dateitypen & Links"
+    },
+    {
+      "id": "q20",
+      "type": "single",
+      "text": "Wo liegen typischerweise die Logdateien?",
+      "options": [
+        "`/etc/log`",
+        "`/tmp/log`",
+        "`/usr/log`",
+        "`/var/log`"
+      ],
+      "correct": 3,
+      "explanation": "`/var` enthält variable Daten: Logs, Spool, Caches, Paketdatenbanken.",
+      "topic": "Dateisystem-Hierarchie"
+    },
+    {
+      "id": "q21",
+      "type": "single",
+      "text": "Wie viele Partitionen erlaubt GPT standardmäßig?",
+      "options": [
+        "4",
+        "16",
+        "64",
+        "128"
+      ],
+      "correct": 3,
+      "explanation": "GPT kennt keine erweiterten/logischen Partitionen und unterstützt Datenträger über 2 TiB.",
+      "topic": "Partitionierung"
+    },
+    {
+      "id": "q22",
+      "type": "multi",
+      "text": "Mit welchen Programmen kann man eine Festplatte partitionieren?",
+      "options": [
+        "`fdisk`",
+        "`mkfs`",
+        "`parted`",
+        "`gdisk`",
+        "`mount`"
+      ],
+      "correct": [
+        0,
+        2,
+        3
+      ],
+      "explanation": "gdisk ist auf GPT spezialisiert, fdisk beherrscht inzwischen MBR und GPT.",
+      "topic": "Partitionierung"
+    },
+    {
+      "id": "q23",
+      "type": "single",
+      "text": "Welche Option von `lspci` zeigt zusätzlich an, welches Kernelmodul (Treiber) ein Gerät verwendet?",
+      "options": [
+        "`-d`",
+        "`-t`",
+        "`-n`",
+        "`-k`"
+      ],
+      "correct": 3,
+      "explanation": "`lspci -k` zeigt „Kernel driver in use“ und „Kernel modules“.",
+      "topic": "Hardware"
+    },
+    {
+      "id": "q24",
+      "type": "single",
+      "text": "Wie zeigen Sie mit journalctl nur die letzten 20 Einträge an?",
+      "options": [
+        "`journalctl -b 20`",
+        "`journalctl -n 20`",
+        "`journalctl -t 20`",
+        "`journalctl -f 20`"
+      ],
+      "correct": 1,
+      "explanation": "`-n` ohne Zahl zeigt die letzten 10. `-b 20` würde den Bootvorgang Nr. 20 auswählen.",
+      "topic": "Logs (journalctl)"
+    },
+    {
+      "id": "q25",
+      "type": "single",
+      "text": "Welche Tastenkombination sendet das Signal SIGINT an den Vordergrundprozess?",
+      "options": [
+        "Strg+C",
+        "Strg+Z",
+        "Strg+L",
+        "Strg+D"
+      ],
+      "correct": 0,
+      "explanation": "Strg+Z sendet SIGTSTP (anhalten), Strg+D bedeutet Ende der Eingabe (EOF).",
+      "topic": "Prozesse"
+    },
+    {
+      "id": "q26",
+      "type": "single",
+      "text": "Welche PID hat auf einem systemd-System der Prozess systemd?",
+      "options": [
+        "1",
+        "Eine zufällige Nummer",
+        "100",
+        "0"
+      ],
+      "correct": 0,
+      "explanation": "systemd (bzw. init) ist der erste Prozess im Userspace und der Urahn aller anderen Prozesse – siehe `pstree`.",
+      "topic": "Prozesse"
+    },
+    {
+      "id": "q27",
+      "type": "single",
+      "text": "Was bewirkt `systemctl mask apache2`?",
+      "options": [
+        "Der Dienst wird versteckt, läuft aber weiter",
+        "Der Dienst wird deinstalliert",
+        "Der Dienst startet nur noch manuell",
+        "Der Dienst kann weder manuell noch automatisch gestartet werden, bis er demaskiert wird"
+      ],
+      "correct": 3,
+      "explanation": "Die Unit wird auf `/dev/null` verlinkt. Rückgängig mit `systemctl unmask apache2`.",
+      "topic": "systemd & Dienste"
+    },
+    {
+      "id": "q28",
+      "type": "single",
+      "text": "Welchen Kernelparameter hängen Sie in GRUB an, um direkt in den Rettungsmodus zu booten?",
+      "options": [
+        "`init=rescue`",
+        "`systemd.unit=rescue.target`",
+        "`runlevel=rescue.service`",
+        "`boot=single.target`"
+      ],
+      "correct": 1,
+      "explanation": "`systemd.unit=` wählt das Ziel-Target für diesen einen Bootvorgang. Noch minimaler ist `emergency.target`.",
+      "topic": "Bootprozess"
+    },
+    {
+      "id": "q29",
+      "type": "single",
+      "text": "Welcher Befehl installiert die heruntergeladene Datei `tool_1.0_amd64.deb` mit dem Low-Level-Paketmanager?",
+      "options": [
+        "`apt update tool_1.0_amd64.deb`",
+        "`dpkg -L tool_1.0_amd64.deb`",
+        "`rpm -i tool_1.0_amd64.deb`",
+        "`dpkg -i tool_1.0_amd64.deb`"
+      ],
+      "correct": 3,
+      "explanation": "Fehlende Abhängigkeiten löst dpkg nicht auf; danach hilft `apt install -f`. Alternativ direkt `apt install ./tool_1.0_amd64.deb`.",
+      "topic": "Paketverwaltung"
+    },
+    {
+      "id": "q30",
+      "type": "single",
+      "text": "Wo werden unter Debian/Ubuntu die Paketquellen (Repositories) eingetragen?",
+      "options": [
+        "In `/var/lib/dpkg/sources`",
+        "In `/etc/yum.repos.d/`",
+        "In `/etc/apt/apt.conf`",
+        "In `/etc/apt/sources.list` bzw. in Dateien unter `/etc/apt/sources.list.d/`"
+      ],
+      "correct": 3,
+      "explanation": "`/etc/yum.repos.d/` ist das Gegenstück bei Red-Hat-Systemen (dnf/yum), `/etc/zypp/repos.d/` bei SUSE.",
+      "topic": "Paketverwaltung"
+    },
+    {
+      "id": "q31",
+      "type": "single",
+      "text": "Welcher Befehl zeigt die IP-Adressen aller Netzwerkschnittstellen an?",
+      "options": [
+        "`ping -a`",
+        "`hostname -f`",
+        "`ip addr show`",
+        "`ip route show`"
+      ],
+      "correct": 2,
+      "explanation": "Kurzform `ip a`. Der veraltete Befehl dafür war `ifconfig`.",
+      "topic": "Netzwerk"
+    },
+    {
+      "id": "q32",
+      "type": "short",
+      "text": "Kopieren Sie die lokale Datei `bericht.pdf` per scp in das Verzeichnis `/tmp` auf dem Rechner `srv01` (Benutzer `anna`).",
+      "accept": [
+        "re:scp\\s+bericht\\.pdf\\s+anna@srv01:/tmp/?(bericht\\.pdf)?"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehlszeile",
+      "explanation": "Syntax wie cp: `scp quelle ziel`, entfernte Pfade als `benutzer@host:pfad`. Verzeichnisse mit `scp -r`.",
+      "topic": "SSH"
+    },
+    {
+      "id": "q33",
+      "type": "text",
+      "topic": "Variablen & Umgebung",
+      "points": 3,
+      "text": "Erklären Sie den Unterschied zwischen einer (privaten) Shellvariablen und einer Umgebungsvariablen. Wie wird aus der einen die andere, und wie sorgt man dafür, dass eine Variable dauerhaft gesetzt ist?",
+      "modelAnswer": "Eine **Shellvariable** (`NAME=wert`) ist nur in der aktuellen Shell sichtbar. Eine **Umgebungsvariable** wird zusätzlich an alle **Kindprozesse** vererbt (gestartete Programme, Subshells).\nMit `export NAME` (oder direkt `export NAME=wert`) wird aus einer Shellvariablen eine Umgebungsvariable. `env` zeigt die Umgebungsvariablen, `set` alle Variablen.\nVariablen gehen beim Beenden der Shell verloren. **Dauerhaft** werden sie, indem man die Zuweisung (mit export) in eine Startdatei schreibt, z.B. `~/.bashrc` oder `~/.profile` (systemweit `/etc/profile`).",
+      "keywords": [
+        "Kindprozess|Subshell|vererbt|gestartete Programme",
+        "export",
+        "env",
+        "set",
+        "bashrc|.profile|/etc/profile"
+      ]
+    },
+    {
+      "id": "q34",
+      "type": "text",
+      "topic": "Bootprozess",
+      "points": 3,
+      "text": "Beschreiben Sie, wie Sie ein vergessenes root-Passwort mit Hilfe von `init=/bin/bash` zurücksetzen. Nennen Sie die einzelnen Schritte.",
+      "modelAnswer": "1. Rechner neu starten, im **GRUB**-Menü den Eintrag auswählen und mit `e` **bearbeiten**.\n2. An die Zeile, die mit `linux` beginnt, `init=/bin/bash` anhängen und mit Strg+X (oder F10) booten.\n3. Man erhält eine root-Shell ohne Passwortabfrage. Das Root-Dateisystem ist aber nur lesbar eingehängt: `mount -o remount,rw /`.\n4. Mit `passwd` das neue root-Passwort setzen.\n5. Mit `sync` die Daten schreiben und neu starten, z.B. `exec /sbin/init` oder `reboot -f` (ein normales `reboot` geht nicht, weil systemd nicht läuft). Auf SELinux-Systemen vorher `touch /.autorelabel`.\nDie Änderung in GRUB gilt nur für diesen einen Bootvorgang.",
+      "keywords": [
+        "GRUB",
+        "bearbeiten|e drücken|Taste e|editieren",
+        "init=/bin/bash",
+        "remount|rw",
+        "passwd",
+        "sync|reboot|neu starten|neustart"
+      ]
+    }
+  ]
+}

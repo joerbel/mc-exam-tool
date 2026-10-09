@@ -1,0 +1,643 @@
+{
+  "title": "Zusätzliche Trainingsfragen",
+  "description": "Erscheinen nur im freien Training und in Zufallsprüfungen.",
+  "trainingOnly": true,
+  "questions": [
+    {
+      "id": "q01",
+      "type": "multi",
+      "text": "Welche der folgenden Lizenzen sind freizügige (permissive) Open-Source-Lizenzen **ohne** Copyleft?",
+      "options": [
+        "GPLv3",
+        "BSD-Lizenz",
+        "GPLv2",
+        "MIT-Lizenz"
+      ],
+      "correct": [
+        1,
+        3
+      ],
+      "explanation": "Freizügige Lizenzen erlauben auch die Verwendung in proprietärer Software. Eine Liste anerkannter Lizenzen pflegt die Open Source Initiative (opensource.org).",
+      "topic": "Geschichte & Lizenzen"
+    },
+    {
+      "id": "q02",
+      "type": "single",
+      "text": "Wer gründete 1983 das GNU-Projekt und 1985 die Free Software Foundation?",
+      "options": [
+        "Ken Thompson",
+        "Richard Stallman",
+        "Andrew S. Tanenbaum",
+        "Linus Torvalds"
+      ],
+      "correct": 1,
+      "explanation": "Stallman wollte ein vollständig freies Unix-kompatibles Betriebssystem schaffen. GNU steht für „GNU's Not Unix“.",
+      "topic": "Geschichte & Lizenzen"
+    },
+    {
+      "id": "q03",
+      "type": "single",
+      "text": "Welcher Pfad ist ein **absoluter** Pfad?",
+      "options": [
+        "`usr/share/doc`",
+        "`../share/doc`",
+        "`./doc`",
+        "`/usr/share/doc`"
+      ],
+      "correct": 3,
+      "explanation": "Absolute Pfade beginnen immer mit `/`, der Wurzel des Dateisystems.",
+      "topic": "Shell-Grundlagen"
+    },
+    {
+      "id": "q04",
+      "type": "single",
+      "text": "Was ist die Shell?",
+      "options": [
+        "Ein grafischer Dateimanager",
+        "Der Kernel des Betriebssystems",
+        "Ein Kommandointerpreter, der Eingaben entgegennimmt und Programme startet",
+        "Das Fenster, in dem Text angezeigt wird (Terminalemulator)"
+      ],
+      "correct": 2,
+      "explanation": "Das Terminal(-programm) stellt nur das Fenster bereit; darin läuft die Shell (meist bash). Sie ist der gemeinsame Nenner aller Distributionen.",
+      "topic": "Shell-Grundlagen"
+    },
+    {
+      "id": "q05",
+      "type": "single",
+      "text": "Was zeigt `ls -ld /etc` an?",
+      "options": [
+        "Den Inhalt von `/etc` rekursiv",
+        "Eine ausführliche Liste aller Dateien in `/etc`",
+        "Die ausführlichen Informationen über das Verzeichnis `/etc` selbst",
+        "Nur die Unterverzeichnisse von `/etc`"
+      ],
+      "correct": 2,
+      "explanation": "`-d` listet das Verzeichnis selbst statt seines Inhalts, `-l` zeigt das ausführliche Format.",
+      "topic": "Shell-Grundlagen"
+    },
+    {
+      "id": "q06",
+      "type": "single",
+      "text": "Was bewirkt die Tastenkombination Strg+L in der Bash?",
+      "options": [
+        "Sie listet die Dateien auf (wie `ls`)",
+        "Sie sperrt den Bildschirm",
+        "Sie leert den Bildschirm (wie `clear`)",
+        "Sie meldet den Benutzer ab"
+      ],
+      "correct": 2,
+      "explanation": "Strg+L bzw. `clear` leeren nur die Anzeige; die eingegebene Befehlszeile bleibt erhalten.",
+      "topic": "Shell-Grundlagen"
+    },
+    {
+      "id": "q07",
+      "type": "multi",
+      "text": "Welche Programme sind Pager, mit denen man lange Ausgaben seitenweise betrachten kann?",
+      "options": [
+        "`cat`",
+        "`less`",
+        "`more`",
+        "`sort`"
+      ],
+      "correct": [
+        1,
+        2
+      ],
+      "explanation": "`less` kann im Gegensatz zu `more` auch zuverlässig zurückblättern („less is more“).",
+      "topic": "Dateien anzeigen & Textwerkzeuge"
+    },
+    {
+      "id": "q08",
+      "type": "single",
+      "text": "Was macht `sort -t: -k3 -n /etc/passwd`?",
+      "options": [
+        "Es sortiert nach den ersten 3 Zeichen jeder Zeile",
+        "Es gibt nur das 3. Feld jeder Zeile aus",
+        "Es sortiert die Zeilen numerisch nach dem 3. Feld (der UID); Felder sind durch Doppelpunkte getrennt",
+        "Es zeigt die ersten 3 Zeilen sortiert an"
+      ],
+      "correct": 2,
+      "explanation": "`-t:` legt den Feldtrenner fest, `-k3` das Sortierfeld, `-n` numerische Sortierung.",
+      "topic": "Dateien anzeigen & Textwerkzeuge"
+    },
+    {
+      "id": "q09",
+      "type": "short",
+      "text": "Mit welchem Befehl machen Sie die bereits gesetzte Shellvariable `EDITOR` für Kindprozesse sichtbar? (vollständiger Befehl)",
+      "accept": [
+        "export EDITOR"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "`export` macht aus einer Shellvariablen eine Umgebungsvariable. Kurzform beim Setzen: `export EDITOR=vim`.",
+      "topic": "Variablen & Umgebung"
+    },
+    {
+      "id": "q10",
+      "type": "single",
+      "text": "Welche Variable legt das Aussehen der Eingabeaufforderung (Prompt) der Bash fest?",
+      "options": [
+        "`PS1`",
+        "`TERM`",
+        "`PATH`",
+        "`LANG`"
+      ],
+      "correct": 0,
+      "explanation": "Z.B. `PS1='\\u@\\h:\\w\\$ '` zeigt Benutzer, Host und Arbeitsverzeichnis.",
+      "topic": "Variablen & Umgebung"
+    },
+    {
+      "id": "q11",
+      "type": "single",
+      "text": "In welcher Reihenfolge prüft die Bash, was hinter einem eingegebenen Befehlsnamen steckt (vereinfacht)?",
+      "options": [
+        "Alias → PATH → Builtin",
+        "PATH → Builtin → Alias",
+        "Builtin → PATH → Alias",
+        "Alias → Builtin → externes Programm im PATH"
+      ],
+      "correct": 3,
+      "explanation": "Zuerst werden Aliase ersetzt, dann Funktionen und Builtins geprüft, erst danach wird im PATH gesucht.",
+      "topic": "Befehlstypen"
+    },
+    {
+      "id": "q12",
+      "type": "single",
+      "text": "Was bewirkt `dd` im Normalmodus von vim?",
+      "options": [
+        "Es löscht (schneidet aus) die aktuelle Zeile",
+        "Es dupliziert die aktuelle Zeile",
+        "Es springt ans Dateiende",
+        "Es beendet vim ohne zu speichern"
+      ],
+      "correct": 0,
+      "explanation": "Die gelöschte Zeile kann mit `p` wieder eingefügt werden. `yy` kopiert eine Zeile, `u` macht rückgängig.",
+      "topic": "Editoren (vim, nano)"
+    },
+    {
+      "id": "q13",
+      "type": "short",
+      "text": "Wie beenden Sie vim, **ohne** die Änderungen zu speichern? (Eingabe im Normalmodus)",
+      "accept": [
+        ":q!"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Eingabe",
+      "explanation": "Das `!` erzwingt das Beenden trotz ungespeicherter Änderungen.",
+      "topic": "Editoren (vim, nano)"
+    },
+    {
+      "id": "q14",
+      "type": "single",
+      "text": "Anna möchte eine Shell als Benutzer `webadmin` **mit dessen Login-Umgebung** starten. Welcher Befehl ist richtig?",
+      "options": [
+        "`chuser webadmin`",
+        "`login -s webadmin`",
+        "`su - webadmin`",
+        "`sudo webadmin`"
+      ],
+      "correct": 2,
+      "explanation": "`su - benutzer` wechselt mit Login-Umgebung zum angegebenen Benutzer; ohne Benutzername ist root gemeint. Mit sudo ginge es als `sudo -i -u webadmin`.",
+      "topic": "sudo & su"
+    },
+    {
+      "id": "q15",
+      "type": "multi",
+      "text": "Mit welchen Befehlen erhalten Sie direkt auf dem System Hilfe zu einem externen Befehl?",
+      "options": [
+        "`info befehl`",
+        "`helpme befehl`",
+        "`man befehl`",
+        "`befehl --help`",
+        "`doc befehl`"
+      ],
+      "correct": [
+        0,
+        2,
+        3
+      ],
+      "explanation": "`help` funktioniert dagegen nur für Bash-Builtins. Hilfe zur Hilfe: `man man`, `info info`.",
+      "topic": "Hilfe & Dokumentation"
+    },
+    {
+      "id": "q16",
+      "type": "single",
+      "text": "Wie suchen Sie innerhalb einer geöffneten Manpage nach dem Wort `recursive`?",
+      "options": [
+        "`man -s recursive` eingeben",
+        "`/recursive` eingeben und Enter drücken",
+        "`:search recursive` eingeben",
+        "Strg+F drücken"
+      ],
+      "correct": 1,
+      "explanation": "Manpages werden mit einem Pager (meist less) angezeigt, daher gelten dessen Tasten: `/` suchen, `n` nächster Treffer, `q` beenden.",
+      "topic": "Hilfe & Dokumentation"
+    },
+    {
+      "id": "q17",
+      "type": "single",
+      "text": "Sie haben `cat /etc/hots` getippt (Tippfehler). Welcher Befehl wiederholt ihn mit korrigiertem Dateinamen?",
+      "options": [
+        "`!!hosts`",
+        "`!hots=hosts`",
+        "`s/hots/hosts/`",
+        "`^hots^hosts`"
+      ],
+      "correct": 3,
+      "explanation": "`^alt^neu` wiederholt den letzten Befehl und ersetzt dabei das erste Vorkommen von „alt“ durch „neu“.",
+      "topic": "History"
+    },
+    {
+      "id": "q18",
+      "type": "multi",
+      "text": "Welche Aussagen zu `;`, `&&` und `||` sind richtig?",
+      "options": [
+        "Bei `befehl1 && befehl2` läuft befehl2 nur, wenn befehl1 erfolgreich war.",
+        "Bei `befehl1 || befehl2` laufen beide Befehle gleichzeitig.",
+        "Bei `befehl1 ; befehl2` läuft befehl2 immer, unabhängig vom Erfolg von befehl1.",
+        "`&&` leitet die Ausgabe von befehl1 an befehl2 weiter."
+      ],
+      "correct": [
+        0,
+        2
+      ],
+      "explanation": "`||` führt befehl2 nur aus, wenn befehl1 fehlschlägt. Das Weiterleiten der Ausgabe macht die Pipe `|`.",
+      "topic": "Sonderzeichen & Quoting"
+    },
+    {
+      "id": "q19",
+      "type": "single",
+      "text": "Was gibt `echo {a,b,c}.txt` aus?",
+      "options": [
+        "`abc.txt`",
+        "`{a,b,c}.txt`",
+        "Nur die tatsächlich vorhandenen Dateien unter a.txt, b.txt, c.txt",
+        "`a.txt b.txt c.txt`"
+      ],
+      "correct": 3,
+      "explanation": "Die Klammererweiterung (Brace Expansion) erzeugt die Wörter unabhängig davon, ob Dateien existieren.",
+      "topic": "Sonderzeichen & Quoting"
+    },
+    {
+      "id": "q20",
+      "type": "single",
+      "text": "Was bewirkt `sort < namen.txt`?",
+      "options": [
+        "Die sortierte Ausgabe wird in `namen.txt` geschrieben",
+        "`namen.txt` wird gelöscht",
+        "`sort` liest `namen.txt` über die Standardeingabe und gibt das Ergebnis auf dem Bildschirm aus",
+        "`sort` wartet auf Tastatureingaben und ignoriert die Datei"
+      ],
+      "correct": 2,
+      "explanation": "`<` leitet die Standardeingabe aus einer Datei um.",
+      "topic": "Ein-/Ausgabe-Umleitung & Pipes"
+    },
+    {
+      "id": "q21",
+      "type": "short",
+      "text": "Geben Sie eine Befehlszeile an, die mit Hilfe einer Pipe **zählt**, wie viele Zeilen `ls /etc` ausgibt.",
+      "accept": [
+        "re:ls\\s+/etc\\s*\\|\\s*wc\\s+-l"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehlszeile",
+      "explanation": "`wc -l` zählt Zeilen (word count, lines).",
+      "topic": "Ein-/Ausgabe-Umleitung & Pipes"
+    },
+    {
+      "id": "q22",
+      "type": "single",
+      "text": "Wer darf mit `chmod` die Rechte einer Datei ändern?",
+      "options": [
+        "Der Eigentümer der Datei und root",
+        "Jeder, der Schreibrecht auf die Datei hat",
+        "Nur root",
+        "Alle Mitglieder der Gruppe der Datei"
+      ],
+      "correct": 0,
+      "explanation": "Das Schreibrecht betrifft nur den Inhalt, nicht die Metadaten wie die Rechte.",
+      "topic": "Dateirechte"
+    },
+    {
+      "id": "q23",
+      "type": "single",
+      "text": "Wo liegen der Kernel und die initramfs?",
+      "options": [
+        "`/lib/modules`",
+        "`/sys`",
+        "`/boot`",
+        "`/kernel`"
+      ],
+      "correct": 2,
+      "explanation": "In `/lib/modules/<version>` liegen die Kernelmodule.",
+      "topic": "Dateisystem-Hierarchie"
+    },
+    {
+      "id": "q24",
+      "type": "single",
+      "text": "Was passiert in `/dev`, wenn Sie einen USB-Stick einstecken?",
+      "options": [
+        "Es erscheinen neue Gerätedateien, z.B. `/dev/sdb` und `/dev/sdb1`",
+        "Nichts, `/dev` ist statisch",
+        "Der Inhalt des Sticks wird nach `/dev/usb` kopiert",
+        "Es wird ein neuer Eintrag in `/etc/fstab` angelegt"
+      ],
+      "correct": 0,
+      "explanation": "udev legt die Gerätedateien dynamisch an und entfernt sie beim Abziehen wieder.",
+      "topic": "Dateisystem-Hierarchie"
+    },
+    {
+      "id": "q25",
+      "type": "single",
+      "text": "Was muss man bei MBR tun, um mehr als vier Partitionen anzulegen?",
+      "options": [
+        "Eine Swap-Partition anlegen",
+        "Das ist bei MBR unmöglich",
+        "Die Festplatte mit mkfs neu formatieren",
+        "Eine erweiterte Partition anlegen und darin logische Partitionen erstellen"
+      ],
+      "correct": 3,
+      "explanation": "Logische Partitionen werden unter Linux ab Nummer 5 gezählt (z.B. `/dev/sda5`).",
+      "topic": "Partitionierung"
+    },
+    {
+      "id": "q26",
+      "type": "single",
+      "text": "Wie richten Sie die Partition `/dev/sdb2` als Swap ein und aktivieren sie?",
+      "options": [
+        "`mkswap /dev/sdb2` und dann `swapon /dev/sdb2`",
+        "`fdisk -swap /dev/sdb2`",
+        "`mkfs.swap /dev/sdb2` und dann `mount -swap /dev/sdb2`",
+        "`swapon /dev/sdb2` und dann `mkswap /dev/sdb2`"
+      ],
+      "correct": 0,
+      "explanation": "Dauerhaft wird Swap über einen Eintrag in `/etc/fstab` aktiviert.",
+      "topic": "Partitionierung"
+    },
+    {
+      "id": "q27",
+      "type": "single",
+      "text": "Wo speichert systemd-journald sein Journal dauerhaft, sodass es einen Neustart übersteht?",
+      "options": [
+        "`/run/log/journal`",
+        "`/var/log/journal`",
+        "`/etc/journal`",
+        "`/tmp/journal`"
+      ],
+      "correct": 1,
+      "explanation": "`/run/log/journal` liegt im RAM und geht beim Neustart verloren.",
+      "topic": "Logs (journalctl)"
+    },
+    {
+      "id": "q28",
+      "type": "single",
+      "text": "Wie holen Sie den Hintergrundjob Nr. 2 in den Vordergrund?",
+      "options": [
+        "`jobs 2`",
+        "`fg %2`",
+        "`kill -CONT 2`",
+        "`bg %2`"
+      ],
+      "correct": 1,
+      "explanation": "Jobnummern (aus `jobs`) werden mit `%` angesprochen, PIDs ohne.",
+      "topic": "Prozesse"
+    },
+    {
+      "id": "q29",
+      "type": "single",
+      "text": "Mit welchem Befehl finden Sie die PID(s) des Prozesses `sshd`?",
+      "options": [
+        "`pkill sshd`",
+        "`kill -l sshd`",
+        "`pgrep sshd`",
+        "`pid sshd`"
+      ],
+      "correct": 2,
+      "explanation": "`pkill` würde den Prozess beenden. Alternativ: `ps aux | grep sshd` oder `pidof sshd`.",
+      "topic": "Prozesse"
+    },
+    {
+      "id": "q30",
+      "type": "single",
+      "text": "Eine Unit-Datei gleichen Namens liegt sowohl in `/usr/lib/systemd/system` als auch in `/etc/systemd/system`. Welche gilt?",
+      "options": [
+        "Keine – systemd meldet einen Fehler",
+        "Die in `/etc/systemd/system`",
+        "Die in `/usr/lib/systemd/system`",
+        "Die mit dem neueren Änderungsdatum"
+      ],
+      "correct": 1,
+      "explanation": "Pakete installieren nach /usr/lib/systemd/system (bzw. /lib/systemd/system); der Admin überschreibt in /etc/systemd/system.",
+      "topic": "systemd & Dienste"
+    },
+    {
+      "id": "q31",
+      "type": "single",
+      "text": "Welcher Befehl zeigt das Standard-Target an, in das das System bootet?",
+      "options": [
+        "`runlevel --default`",
+        "`systemctl get-default`",
+        "`systemctl default`",
+        "`systemctl show-target`"
+      ],
+      "correct": 1,
+      "explanation": "Ändern mit `systemctl set-default multi-user.target`. Vorsicht: `systemctl default` wechselt sofort ins Standard-Target.",
+      "topic": "systemd & Dienste"
+    },
+    {
+      "id": "q32",
+      "type": "short",
+      "text": "Mit welchem Befehl stoppen Sie den Dienst `nginx` sofort? (vollständiger Befehl)",
+      "accept": [
+        "systemctl stop nginx",
+        "systemctl stop nginx.service"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "Das stoppt nur den laufenden Dienst; ob er beim Booten startet, steuert enable/disable.",
+      "topic": "systemd & Dienste"
+    },
+    {
+      "id": "q33",
+      "type": "multi",
+      "text": "Welche Aussagen zum Kernelparameter `init=/bin/bash` sind richtig?",
+      "options": [
+        "Die Option wird dauerhaft in `/etc/fstab` gespeichert.",
+        "Das Root-Dateisystem ist danach meist nur lesbar eingehängt.",
+        "Statt systemd wird direkt eine root-Shell ohne Passwortabfrage gestartet.",
+        "Alle Dienste werden dabei normal gestartet."
+      ],
+      "correct": [
+        1,
+        2
+      ],
+      "explanation": "Deshalb sollte man GRUB per Passwort schützen, wenn Fremde physischen Zugang zum Rechner haben.",
+      "topic": "Bootprozess"
+    },
+    {
+      "id": "q34",
+      "type": "single",
+      "text": "Welche Datei bearbeiten Sie, um GRUB-Einstellungen (z.B. Timeout, Kernelparameter) dauerhaft zu ändern, bevor Sie `update-grub` bzw. `grub-mkconfig` ausführen?",
+      "options": [
+        "`/boot/grub/grub.cfg`",
+        "`/etc/fstab`",
+        "`/etc/default/grub`",
+        "`/etc/grub.d/kernel.conf`"
+      ],
+      "correct": 2,
+      "explanation": "`grub.cfg` wird aus /etc/default/grub und den Skripten in /etc/grub.d erzeugt und sollte nicht direkt bearbeitet werden.",
+      "topic": "Bootprozess"
+    },
+    {
+      "id": "q35",
+      "type": "single",
+      "text": "Welcher Befehl listet alle installierten RPM-Pakete auf?",
+      "options": [
+        "`rpm -e`",
+        "`rpm -qa`",
+        "`rpm -ql`",
+        "`rpm -qi`"
+      ],
+      "correct": 1,
+      "explanation": "`-qa` = query all. Mit `| grep name` gezielt filtern. `-e` (erase) entfernt ein Paket.",
+      "topic": "Paketverwaltung"
+    },
+    {
+      "id": "q36",
+      "type": "single",
+      "text": "Welcher Befehl spielt unter Debian/Ubuntu verfügbare Aktualisierungen der installierten Pakete ein (nachdem die Kataloge aktualisiert wurden)?",
+      "options": [
+        "`apt install --all`",
+        "`apt update`",
+        "`apt upgrade`",
+        "`dpkg --upgrade`"
+      ],
+      "correct": 2,
+      "explanation": "`apt full-upgrade` darf dabei zusätzlich Pakete entfernen, wenn Abhängigkeiten es erfordern.",
+      "topic": "Paketverwaltung"
+    },
+    {
+      "id": "q37",
+      "type": "multi",
+      "text": "Welche Dateien spielen bei der Auflösung von Hostnamen eine Rolle?",
+      "options": [
+        "`/etc/fstab`",
+        "`/etc/hosts`",
+        "`/etc/resolv.conf`",
+        "`/etc/nsswitch.conf`",
+        "`/etc/shadow`"
+      ],
+      "correct": [
+        1,
+        2,
+        3
+      ],
+      "explanation": "nsswitch.conf legt die Reihenfolge fest (Zeile `hosts: files dns`), hosts enthält lokale Einträge, resolv.conf die DNS-Server.",
+      "topic": "Netzwerk"
+    },
+    {
+      "id": "q38",
+      "type": "single",
+      "text": "Welche Datei ordnet Dienstnamen (z.B. ssh, http) ihren Standard-Portnummern zu?",
+      "options": [
+        "`/etc/services`",
+        "`/etc/hosts`",
+        "`/etc/protocols`",
+        "`/etc/ports`"
+      ],
+      "correct": 0,
+      "explanation": "`/etc/protocols` ordnet Protokollnamen (tcp, udp, icmp) Protokollnummern zu.",
+      "topic": "Netzwerk"
+    },
+    {
+      "id": "q39",
+      "type": "short",
+      "text": "Mit welchem Befehl prüfen Sie, ob der Rechner `192.168.1.1` erreichbar ist, und senden dabei **genau 3** Pakete? (vollständiger Befehl)",
+      "accept": [
+        "re:ping\\s+-c\\s*3\\s+192\\.168\\.1\\.1",
+        "re:ping\\s+192\\.168\\.1\\.1\\s+-c\\s*3"
+      ],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "Ohne `-c` sendet ping unter Linux endlos, bis man mit Strg+C abbricht.",
+      "topic": "Netzwerk"
+    },
+    {
+      "id": "q40",
+      "type": "multi",
+      "text": "Welche Aussagen zur Anmeldung mit SSH-Schlüsseln sind richtig?",
+      "options": [
+        "Der private Schlüssel bleibt auf dem eigenen Rechner und wird nicht weitergegeben.",
+        "Mit `ssh-copy-id` wird der private Schlüssel auf den Server kopiert.",
+        "Bei der Anmeldung mit Schlüsseln ist die Verbindung unverschlüsselt, dafür schneller.",
+        "Auf dem Server steht der öffentliche Schlüssel in `~/.ssh/authorized_keys` des Zielbenutzers."
+      ],
+      "correct": [
+        0,
+        3
+      ],
+      "explanation": "Der private Schlüssel sollte die Rechte 600 haben und kann zusätzlich mit einer Passphrase geschützt werden.",
+      "topic": "SSH"
+    },
+    {
+      "id": "q41",
+      "type": "single",
+      "text": "In welcher Datei wird der SSH-**Server** konfiguriert (z.B. `PermitRootLogin`)?",
+      "options": [
+        "`/etc/sshd.conf`",
+        "`/etc/ssh/sshd_config`",
+        "`/etc/ssh/ssh_config`",
+        "`~/.ssh/config`"
+      ],
+      "correct": 1,
+      "explanation": "Das `d` steht für den Daemon. `ssh_config` bzw. `~/.ssh/config` konfigurieren den Client.",
+      "topic": "SSH"
+    },
+    {
+      "id": "q42",
+      "type": "single",
+      "text": "Was ist `sftp`?",
+      "options": [
+        "Der Name des SSH-Serverdienstes",
+        "Ein interaktives Programm zur Dateiübertragung, das verschlüsselt über SSH arbeitet",
+        "Ein Befehl zum Erzeugen von SSH-Schlüsseln",
+        "Ein unverschlüsseltes, dafür schnelleres FTP"
+      ],
+      "correct": 1,
+      "explanation": "In sftp gibt es Befehle wie `ls`, `cd`, `get` und `put`.",
+      "topic": "SSH"
+    },
+    {
+      "id": "q43",
+      "type": "text",
+      "topic": "Geschichte & Lizenzen",
+      "points": 3,
+      "text": "Beschreiben Sie kurz, welche Rolle Richard Stallman, Andrew Tanenbaum und Linus Torvalds bei der Entstehung von Linux spielten.",
+      "modelAnswer": "**Richard Stallman** gründete 1983 das **GNU**-Projekt (ein freies, Unix-kompatibles Betriebssystem) und 1985 die **Free Software Foundation**; er schrieb die **GPL**. Von GNU stammen viele Werkzeuge (gcc, bash, coreutils), der eigene Kernel (Hurd) wurde aber nie fertig.\n**Andrew Tanenbaum** schrieb 1987 **Minix**, ein kleines Unix-ähnliches Lehrbetriebssystem mit Mikrokernel, mit dem Torvalds arbeitete.\n**Linus Torvalds** entwickelte **1991** als Student in Helsinki den Linux-**Kernel** und stellte ihn unter die GPL. Zusammen mit den GNU-Werkzeugen entstand ein vollständiges freies Betriebssystem (GNU/Linux).",
+      "keywords": [
+        "GNU",
+        "Free Software Foundation|FSF",
+        "GPL",
+        "Minix",
+        "Kernel",
+        "1991"
+      ]
+    },
+    {
+      "id": "q44",
+      "type": "text",
+      "topic": "Dateirechte",
+      "points": 3,
+      "text": "Erklären Sie, wie die umask funktioniert. Welche Rechte erhalten neue Dateien und Verzeichnisse bei einer umask von `027`?",
+      "modelAnswer": "Die umask legt fest, welche Rechte bei neu angelegten Dateien und Verzeichnissen **entfernt** werden. Ausgangswerte sind **666** (`rw-rw-rw-`) für Dateien und **777** (`rwxrwxrwx`) für Verzeichnisse; die in der umask gesetzten Bits werden davon weggenommen.\nBei umask 027: Dateien **640** (`rw-r-----`), Verzeichnisse **750** (`rwxr-x---`). Die Gruppe verliert das Schreibrecht, andere bekommen gar keine Rechte.\nAnzeigen mit `umask`, setzen mit `umask 027` (gilt für die aktuelle Shell; dauerhaft z.B. in ~/.bashrc).",
+      "keywords": [
+        "666",
+        "777",
+        "640|rw-r-----",
+        "750|rwxr-x---",
+        "entfernt|abgezogen|weggenommen|ausgeblendet"
+      ]
+    }
+  ]
+}

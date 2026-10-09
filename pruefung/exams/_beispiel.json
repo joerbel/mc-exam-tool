@@ -1,0 +1,49 @@
+{
+  "title": "Formatbeispiel",
+  "description": "Zeigt alle Fragetypen. Dateien mit _ am Anfang werden ignoriert – zum Ausprobieren umbenennen.",
+  "durationMinutes": 10,
+  "passPercent": 60,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single",
+      "topic": "Dateirechte",
+      "points": 1,
+      "text": "Welcher Befehl setzt die Rechte einer Datei auf `rw-r-----`?",
+      "options": ["`chmod 640 datei`", "`chmod 750 datei`", "`chmod 644 datei`", "`chown 640 datei`"],
+      "correct": 0,
+      "explanation": "rw- = 6, r-- = 4, --- = 0."
+    },
+    {
+      "id": "q2",
+      "type": "multi",
+      "topic": "Ein-/Ausgabe-Umleitung & Pipes",
+      "points": 1,
+      "text": "Welche Befehle schreiben **sowohl** stdout als auch stderr in `log.txt`? (Wähle 2)",
+      "options": ["`cmd > log.txt 2>&1`", "`cmd 2>&1 > log.txt`", "`cmd &> log.txt`", "`cmd | tee log.txt`"],
+      "correct": [0, 2],
+      "explanation": "Die Reihenfolge zählt: `2>&1` muss nach der stdout-Umleitung stehen. `tee` bekommt nur stdout."
+    },
+    {
+      "id": "q3",
+      "type": "short",
+      "topic": "Hilfe & Dokumentation",
+      "points": 1,
+      "text": "Mit welchem Befehl zeigt man die Manpage zu `passwd` aus Abschnitt 5 an? (vollständiger Befehl)",
+      "accept": ["man 5 passwd", "re:man\\s+-s\\s*5\\s+passwd"],
+      "caseSensitive": true,
+      "placeholder": "Befehl",
+      "explanation": "Abschnitt 5 enthält Dateiformate, hier also `/etc/passwd`."
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "topic": "Dateitypen & Links",
+      "points": 2,
+      "text": "Erkläre den Unterschied zwischen einem Hardlink und einem Softlink.",
+      "modelAnswer": "Ein **Hardlink** ist ein weiterer Verzeichniseintrag für dieselbe Inode – die Daten bleiben erhalten, solange noch ein Link existiert; nur im selben Dateisystem, nicht für Verzeichnisse.\nEin **Softlink** (symbolischer Link) ist eine eigene Datei, die den Pfad zum Ziel enthält; er kann über Dateisystemgrenzen gehen und auf Verzeichnisse zeigen, wird aber ungültig, wenn das Ziel gelöscht wird.",
+      "keywords": ["Inode", "Pfad", "Dateisystem", "Verzeichnis", "gelöscht|ungültig|dangling"],
+      "explanation": "Erstellen mit `ln ziel name` bzw. `ln -s ziel name`."
+    }
+  ]
+}

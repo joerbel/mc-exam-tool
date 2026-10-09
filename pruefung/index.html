@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linux Probeprüfungen</title>
+<style>
+:root{--bg:#f5f4f0;--card:#fff;--fg:#1d1d1f;--muted:#6b6b72;--line:#dddad2;--accent:#2f5bd3;--accentfg:#fff;--ok:#1d7f46;--okbg:#e5f3ea;--bad:#be3a30;--badbg:#fbe8e6;--warn:#9a6512;--warnbg:#fcf1dc;--code:#eeece6;--flag:#d48a00}
+@media (prefers-color-scheme: dark){:root{--bg:#16171a;--card:#202125;--fg:#e8e8ea;--muted:#9b9ba3;--line:#34353b;--accent:#7f9dff;--accentfg:#0d1020;--ok:#5cc98a;--okbg:#18301f;--bad:#ff8077;--badbg:#3a1e1c;--warn:#e9b65c;--warnbg:#36291a;--code:#2b2c31;--flag:#f0b030}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+main{max-width:920px;margin:0 auto;padding:16px 16px 80px}
+h1{font-size:22px;margin:0}
+h2{font-size:17px;margin:0 0 12px}
+a{color:var(--accent)}
+code,pre,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13.5px}
+code{background:var(--code);padding:1px 5px;border-radius:4px}
+pre{background:var(--code);padding:10px 12px;border-radius:6px;overflow-x:auto;margin:10px 0;white-space:pre}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:0 0 14px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.top{display:flex;align-items:center;gap:16px;margin:4px 0 18px;flex-wrap:wrap}
+.top nav{display:flex;gap:6px;margin-left:auto}
+.top nav a{text-decoration:none;padding:6px 12px;border-radius:7px;color:var(--fg)}
+.top nav a.on{background:var(--card);border:1px solid var(--line)}
+.btn{display:inline-block;font:inherit;font-size:14px;padding:6px 13px;border-radius:7px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accentfg)}
+.btn.danger{color:var(--bad)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.sm{padding:3px 9px;font-size:13px}
+.btn.on{outline:2px solid var(--accent);outline-offset:1px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:6px 0}
+.errors{background:var(--badbg);color:var(--bad);border-radius:7px;padding:10px 12px;margin-bottom:12px;font-size:14px}
+.train{display:grid;gap:14px}
+.train form,.train > div{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input[type=number]{width:70px}
+input,select,textarea{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 8px}
+textarea{width:100%;min-height:110px;resize:vertical;margin-top:6px}
+input.short{width:100%;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:6px}
+.bar{height:8px;background:var(--code);border-radius:4px;overflow:hidden;min-width:80px}
+.bar span{display:block;height:100%;background:var(--accent)}
+.bar.ok span{background:var(--ok)} .bar.bad span{background:var(--bad)} .bar.warn span{background:var(--warn)}
+.pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:20px;background:var(--code);white-space:nowrap}
+.pill.ok{background:var(--okbg);color:var(--ok)} .pill.bad{background:var(--badbg);color:var(--bad)} .pill.warn{background:var(--warnbg);color:var(--warn)}
+
+/* Prüfung */
+.examhead{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 8px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.examhead .row{padding:0}
+.timer{font:600 18px ui-monospace,Menlo,monospace}
+.timer.over{color:var(--bad)}
+.qnav{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.qnav button{width:32px;height:28px;font-size:12px;border-radius:5px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer;padding:0}
+.qnav button.done{background:var(--accent);border-color:var(--accent);color:var(--accentfg)}
+.qnav button.flag{box-shadow:inset 0 -3px 0 var(--flag)}
+.qnav button.ok{background:var(--okbg);color:var(--ok);border-color:var(--ok)}
+.qnav button.bad{background:var(--badbg);color:var(--bad);border-color:var(--bad)}
+.qnav button.warn{background:var(--warnbg);color:var(--warn);border-color:var(--warn)}
+.q{scroll-margin-top:130px}
+.q header{display:flex;gap:12px;align-items:baseline;margin-bottom:8px;flex-wrap:wrap}
+.qnum{font-weight:700}
+.flagbox{margin-left:auto;font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
+.qtext{font-size:15.5px}
+.hint{font-size:13px;color:var(--muted);margin:10px 0 4px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:7px 9px;border-radius:7px;cursor:pointer;border:1px solid transparent}
+.opt:hover{background:var(--bg)}
+.opt input{margin-top:4px}
+.letter{font-weight:600;color:var(--muted);min-width:16px}
+.opt:has(input:checked){border-color:var(--accent);background:var(--bg)}
+
+/* Auswertung */
+.score{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.score .big{font-size:40px;font-weight:700;line-height:1}
+.score.ok .big{color:var(--ok)} .score.bad .big{color:var(--bad)} .score.warn .big{color:var(--warn)}
+.q.ok{border-left:4px solid var(--ok)} .q.bad{border-left:4px solid var(--bad)} .q.warn{border-left:4px solid var(--warn)}
+.ropt{display:flex;gap:10px;padding:6px 9px;border-radius:7px;margin:3px 0;align-items:flex-start}
+.ropt .mark{font-size:15px;min-width:18px;color:var(--muted)}
+.ropt.ok{background:var(--okbg)} .ropt.bad{background:var(--badbg)}
+.ropt.chosen .mark{color:var(--fg);font-weight:700}
+.ropt .tag{margin-left:auto;font-size:12px;color:var(--ok);white-space:nowrap}
+.ropt.bad .tag{color:var(--bad)}
+.lbl{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:12px 0 4px;font-weight:600}
+.answer{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:8px 10px}
+.model{background:var(--okbg);border-radius:7px;padding:8px 10px}
+.expl{background:var(--bg);border-radius:7px;padding:8px 10px;margin-top:12px;font-size:14px}
+.review{background:var(--warnbg);border-radius:7px;padding:8px 10px;margin-top:12px;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.grade{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+@media (max-width:600px){.score .big{font-size:32px} .hide-sm{display:none}}
+</style>
+</head>
+<body>
+<main id="app"><p class="muted">Lade …</p></main>
+<script>
+const $app = document.getElementById('app');
+
+// ------------------------------------------------------------ Helfer
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function fmt(s) {
+  // Mini-Markdown: ```Block```, `code`, **fett**, Zeilenumbrüche
+  const blocks = [];
+  let t = String(s ?? '').replace(/```[a-z]*\n?([\s\S]*?)```/g, (m, c) => { blocks.push(c.replace(/\n$/, '')); return `\u0000${blocks.length - 1}\u0000`; });
+  t = esc(t).replace(/`([^`\n]+)`/g, '<code>$1</code>').replace(/\*\*([^*\n]+)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+  return t.replace(/\u0000(\d+)\u0000/g, (m, i) => `<pre>${esc(blocks[i])}</pre>`);
+}
+const num = x => x == null ? '–' : (Math.round(x * 10) / 10).toLocaleString('de-DE');
+const pct = x => x == null ? '–' : num(x) + ' %';
+const mmss = s => { const neg = s < 0; s = Math.abs(Math.round(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), ss = String(s % 60).padStart(2, '0'); return (neg ? '+' : '') + (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + ss; };
+const fdate = d => d ? new Date(d).toLocaleString('de-DE', {dateStyle: 'short', timeStyle: 'short'}) : '–';
+const pts = p => `${num(p)} ${p == 1 ? 'Punkt' : 'Punkte'}`;
+const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function shuffled(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function barCls(p) { return p == null ? '' : p >= 75 ? 'ok' : p >= 60 ? 'warn' : 'bad'; }
+const bar = p => `<div class="bar ${barCls(p)}"><span style="width:${Math.max(0, Math.min(100, p || 0))}%"></span></div>`;
+
+async function api(path, opts = {}) {
+  const r = await fetch(path, {method: opts.method || 'GET', headers: {'Content-Type': 'application/json'}, body: opts.body ? JSON.stringify(opts.body) : undefined});
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || r.statusText);
+  return d;
+}
+
+// localStorage mit Fallback (privates Fenster o.ä.)
+const mem = {};
+const store = {
+  get(k) { try { const v = localStorage.getItem(k); return v == null ? (mem[k] ?? null) : JSON.parse(v); } catch { return mem[k] ?? null; } },
+  set(k, v) { mem[k] = v; try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  del(k) { delete mem[k]; try { localStorage.removeItem(k); } catch {} },
+  keys(prefix) { const ks = new Set(Object.keys(mem)); try { for (let i = 0; i < localStorage.length; i++) ks.add(localStorage.key(i)); } catch {} return [...ks].filter(k => k && k.startsWith(prefix)); },
+};
+const draftKey = id => 'lpic-draft:' + id;
+const listDrafts = () => store.keys('lpic-draft:').map(k => store.get(k)).filter(d => d && d.exam).sort((a, b) => b.startedAt - a.startedAt);
+
+function isAnswered(q, a) {
+  if (q.type === 'single') return Number.isInteger(a);
+  if (q.type === 'multi') return Array.isArray(a) && a.length > 0;
+  return typeof a === 'string' && a.trim() !== '';
+}
+const answeredCount = dr => dr.exam.questions.filter(q => isAnswered(q, dr.answers[q.key])).length;
+
+function header(active) {
+  return `<div class="top"><h1>🐧 Linux Probeprüfungen</h1><nav>
+    <a href="#/" class="${active === 'home' ? 'on' : ''}">Prüfungen</a>
+    <a href="#/stats" class="${active === 'stats' ? 'on' : ''}">Statistik</a></nav></div>`;
+}
+
+// ------------------------------------------------------------ Router
+let timer = null;
+function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
+function resetHandlers() { $app.onclick = $app.oninput = $app.onchange = $app.onsubmit = null; document.onkeydown = null; }
+
+async function route() {
+  stopTimer(); resetHandlers();
+  const h = location.hash.slice(1) || '/';
+  const [path, query] = h.split('?');
+  const [, view, id] = path.split('/');
+  const q = Object.fromEntries(new URLSearchParams(query || ''));
+  try {
+    if (view === 'exam') await viewExam(decodeURIComponent(id), q);
+    else if (view === 'training') await viewTraining(q);
+    else if (view === 'attempt') await viewAttempt(decodeURIComponent(id));
+    else if (view === 'stats') await viewStats();
+    else await viewHome();
+  } catch (e) {
+    $app.innerHTML = header('') + `<div class="card"><div class="errors">${esc(e.message)}</div><a class="btn" href="#/">Zur Übersicht</a></div>`;
+  }
+}
+window.addEventListener('hashchange', () => { route(); window.scrollTo(0, 0); });
+
+// ------------------------------------------------------------ Übersicht
+async function viewHome() {
+  const d = await api('/api/exams');
+  const drafts = listDrafts();
+  const draftIds = new Set(drafts.map(x => x.exam.id));
+  const shuffle = !!store.get('lpic-opt:shuffle');
+  const tr = store.get('lpic-opt:training') || {};
+  const trainDraft = store.get('lpic-training');
+  $app.innerHTML = header('home') + `
+  ${drafts.length ? `<section class="card"><h2>Angefangen</h2>${drafts.map(dr => `
+    <div class="row"><div><b>${esc(dr.exam.title)}</b><br><span class="muted small">begonnen ${fdate(dr.startedAt)} · ${answeredCount(dr)}/${dr.exam.questions.length} beantwortet</span></div>
+    <div><a class="btn primary" href="#/exam/${encodeURIComponent(dr.exam.id)}">Fortsetzen</a> <button class="btn danger" data-discard="${esc(dr.exam.id)}">Verwerfen</button></div></div>`).join('')}</section>` : ''}
+
+  <section class="card"><h2>Probeprüfungen</h2>
+    ${d.errors.length ? `<div class="errors"><b>Fehlerhafte Prüfungsdateien:</b><br>${d.errors.map(e => `<code>${esc(e.id)}.json</code>: ${esc(e.error)}`).join('<br>')}</div>` : ''}
+    ${d.exams.length ? `<div class="tablewrap"><table><thead><tr><th>Prüfung</th><th class="num">Fragen</th><th class="num hide-sm">Dauer</th><th class="num">Versuche</th><th class="num">Bestes</th><th class="num hide-sm">Letztes</th><th></th></tr></thead><tbody>
+      ${d.exams.map(e => `<tr>
+        <td><b>${esc(e.title)}</b>${e.description ? `<br><span class="muted small">${esc(e.description)}</span>` : ''}</td>
+        <td class="num">${e.questionCount}<br><span class="muted small">${num(e.maxPoints)} P.</span></td>
+        <td class="num hide-sm">${e.durationMinutes} min</td>
+        <td class="num">${e.attempts || '–'}</td>
+        <td class="num">${pct(e.best)}</td>
+        <td class="num hide-sm">${pct(e.last)}</td>
+        <td class="num">${draftIds.has(e.id) ? `<a class="btn" href="#/exam/${encodeURIComponent(e.id)}">Fortsetzen</a>` : `<a class="btn primary" href="#/exam/${encodeURIComponent(e.id)}?new=1">Starten</a>`}</td>
+      </tr>`).join('')}</tbody></table></div>`
+      : `<p class="muted">Noch keine Prüfungen vorhanden. Prüfungen sind JSON-Dateien in <code>pruefung/exams/</code> – bitte Claude, welche zu erstellen.</p>`}
+  </section>
+
+  <section class="card"><h2>Freies Training</h2>
+    <p class="muted small" style="margin:-6px 0 12px">Einzelne Fragen mit sofortiger Auflösung nach jeder Antwort. Fließt in Statistik und „zuletzt falsch“ ein.</p>
+    <form id="training" class="train">
+      <div>Thema <select name="topic"><option value="">alle Themen</option>${d.topics.map(t => `<option value="${esc(t.name)}" ${tr.topic === t.name ? 'selected' : ''}>${esc(t.name)} (${t.count})</option>`).join('')}</select>
+        Fragen <select name="source">
+          <option value="all">alle (${d.poolSize})</option>
+          <option value="wrong" ${tr.source === 'wrong' ? 'selected' : ''}>zuletzt falsch (${d.fehlerCount})</option>
+          <option value="new" ${tr.source === 'new' ? 'selected' : ''}>noch nie beantwortet (${d.newCount})</option></select></div>
+      <div>${[[1, '1 Frage'], [5, '5 Fragen'], [10, '10 Fragen'], [20, '20 Fragen'], [0, 'Endlos']].map(([n, l]) => `<button class="btn ${n == 5 ? 'primary' : ''}" name="n" value="${n}" ${d.poolSize ? '' : 'disabled'}>${l}</button>`).join(' ')}</div>
+    </form>
+    ${trainDraft ? `<div class="row" style="border-top:1px solid var(--line);margin-top:12px;padding-top:10px"><span class="small">Angefangenes Training: ${trainDraft.answered} beantwortet</span><a class="btn" href="#/training">Fortsetzen</a></div>` : ''}
+  </section>
+
+  <section class="card"><h2>Zufallsprüfung</h2>
+    <form id="zufall" class="train"><div>Prüfungsmodus mit Timer, Fragen aus allen Prüfungen und Trainingsfragen:
+      <input type="number" name="n" value="${store.get('lpic-opt:n') || 30}" min="1"> Fragen
+      <button class="btn primary" ${d.poolSize ? '' : 'disabled'}>Starten</button></div></form>
+    <label class="small" style="display:block;margin-top:12px"><input type="checkbox" id="shuffle" ${shuffle ? 'checked' : ''}> Antwortoptionen mischen (gilt für Prüfungen und Training)</label>
+  </section>
+
+  <section class="card"><div class="row" style="padding:0 0 8px"><h2 style="margin:0">Letzte Versuche</h2><a href="#/stats" class="small">Alle Versuche &amp; Statistik →</a></div>
+    ${d.recent.length ? attemptsTable(d.recent, false) : '<p class="muted">Noch keine Versuche.</p>'}
+  </section>`;
+
+  $app.onclick = e => {
+    const t = e.target.closest('[data-discard],[data-go]');
+    if (!t) return;
+    if (t.dataset.go) location.hash = t.dataset.go;
+    else if (confirm('Angefangenen Versuch verwerfen?')) { store.del(draftKey(t.dataset.discard)); route(); }
+  };
+  $app.onchange = e => { if (e.target.id === 'shuffle') store.set('lpic-opt:shuffle', e.target.checked); };
+  $app.onsubmit = e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    if (e.target.id === 'training') {
+      const opt = {topic: f.get('topic'), source: f.get('source')};
+      store.set('lpic-opt:training', opt);
+      location.hash = '#/training?' + new URLSearchParams({new: 1, n: e.submitter ? e.submitter.value : 5, ...opt});
+      return;
+    }
+    store.set('lpic-opt:n', f.get('n'));
+    location.hash = '#/exam/_zufall?' + new URLSearchParams({new: 1, n: f.get('n')});
+  };
+}
+
+function attemptsTable(list, withDelete) {
+  return `<div class="tablewrap"><table><thead><tr><th>Datum</th><th>Prüfung</th><th class="num">Punkte</th><th style="width:22%">Ergebnis</th><th></th></tr></thead><tbody>
+  ${list.map(a => `<tr>
+    <td class="small">${fdate(a.submittedAt)}</td>
+    <td><a href="#/attempt/${encodeURIComponent(a.id)}">${esc(a.title)}</a>${a.hasReview ? ' <span class="pill warn">Feedback</span>' : ''}</td>
+    <td class="num">${num(a.score)}/${num(a.maxScore)}</td>
+    <td><div style="display:flex;gap:8px;align-items:center">${bar(a.percent)}<span class="small" style="white-space:nowrap">${pct(a.percent)}</span></div>
+      ${a.pending ? `<span class="pill warn">${a.pending} zu bewerten</span>` : a.examId === '_training' ? `<span class="pill">Training · ${a.questionCount} Fr.</span>` : a.passed ? '<span class="pill ok">bestanden</span>' : '<span class="pill bad">nicht bestanden</span>'}</td>
+    <td class="num">${withDelete ? `<button class="btn sm danger" data-del="${esc(a.id)}">Löschen</button>` : ''}</td>
+  </tr>`).join('')}</tbody></table></div>`;
+}
+
+// ------------------------------------------------------------ Prüfung bearbeiten
+async function viewExam(id, q) {
+  const dk = draftKey(id);
+  let dr = store.get(dk);
+  if (q.new || !dr) {
+    const p = new URLSearchParams();
+    if (q.n) p.set('n', q.n);
+    if (q.topic) p.set('topic', q.topic);
+    const exam = await api(`/api/exams/${encodeURIComponent(id)}?${p}`);
+    const mix = !!store.get('lpic-opt:shuffle');
+    const order = {};
+    for (const qq of exam.questions) if (qq.options) { const idx = qq.options.map((_, i) => i); order[qq.key] = mix ? shuffled(idx) : idx; }
+    dr = {exam, answers: {}, flagged: {}, order, startedAt: Date.now()};
+    store.set(dk, dr);
+    history.replaceState(null, '', '#/exam/' + encodeURIComponent(id));
+  }
+  const ex = dr.exam;
+  const save = () => store.set(dk, dr);
+
+  $app.innerHTML = `
+  <div class="examhead">
+    <div class="row">
+      <div><b>${esc(ex.title)}</b><br><span class="muted small"><span id="answered"></span> · ${ex.durationMinutes} min</span></div>
+      <div style="display:flex;gap:10px;align-items:center"><span class="timer" id="timer"></span>
+        <button class="btn" id="cancel">Abbrechen</button><button class="btn primary" id="submit">Abgeben</button></div>
+    </div>
+    <div class="qnav" id="qnav">${ex.questions.map((_, i) => `<button data-jump="${i}">${i + 1}</button>`).join('')}</div>
+  </div>
+  ${ex.description ? `<p class="muted">${esc(ex.description)}</p>` : ''}
+  ${ex.questions.map((qq, i) => questionHtml(qq, i, dr)).join('')}
+  <div style="text-align:right"><button class="btn primary" id="submit2">Abgeben</button></div>`;
+
+  const updateNav = () => {
+    const btns = document.querySelectorAll('#qnav button');
+    ex.questions.forEach((qq, i) => {
+      btns[i].classList.toggle('done', isAnswered(qq, dr.answers[qq.key]));
+      btns[i].classList.toggle('flag', !!dr.flagged[qq.key]);
+    });
+    document.getElementById('answered').textContent = `${answeredCount(dr)}/${ex.questions.length} beantwortet`;
+  };
+  const tick = () => {
+    const left = ex.durationMinutes * 60 - (Date.now() - dr.startedAt) / 1000;
+    const el = document.getElementById('timer');
+    if (!el) return stopTimer();
+    el.textContent = left >= 0 ? mmss(left) : mmss(-left) + ' über';
+    el.classList.toggle('over', left < 0);
+    el.title = left >= 0 ? 'verbleibende Zeit' : 'Zeit überschritten';
+  };
+  updateNav(); tick(); timer = setInterval(tick, 1000);
+
+  const onInput = e => {
+    const el = e.target;
+    if (el.dataset.flag) { dr.flagged[el.dataset.flag] = el.checked; }
+    else if (el.dataset.key) {
+      const k = el.dataset.key;
+      if (el.type === 'radio') dr.answers[k] = +el.value;
+      else if (el.type === 'checkbox') {
+        const s = new Set(dr.answers[k] || []);
+        el.checked ? s.add(+el.value) : s.delete(+el.value);
+        dr.answers[k] = [...s].sort((a, b) => a - b);
+        const c = document.getElementById('cnt-' + el.dataset.i);
+        if (c) c.textContent = `(${s.size} gewählt)`;
+      } else dr.answers[k] = el.value;
+    } else return;
+    save(); updateNav();
+  };
+  $app.oninput = onInput; $app.onchange = onInput;
+
+  const submit = async () => {
+    const open = ex.questions.length - answeredCount(dr);
+    const fl = ex.questions.filter(qq => dr.flagged[qq.key]).length;
+    let msg = 'Prüfung jetzt abgeben?';
+    if (open) msg += `\n\n${open} Frage(n) sind noch unbeantwortet.`;
+    if (fl) msg += `\n${fl} Frage(n) sind markiert.`;
+    if (!confirm(msg)) return;
+    const res = await api('/api/attempts', {method: 'POST', body: {
+      examId: ex.id, title: ex.title, durationMinutes: ex.durationMinutes, passPercent: ex.passPercent,
+      questionKeys: ex.questions.map(qq => qq.key), answers: dr.answers,
+      flagged: ex.questions.filter(qq => dr.flagged[qq.key]).map(qq => qq.key),
+      startedAt: dr.startedAt, elapsedSec: Math.round((Date.now() - dr.startedAt) / 1000),
+    }}).catch(err => { alert('Abgeben fehlgeschlagen: ' + err.message + '\n\nDeine Antworten bleiben gespeichert. Läuft der Server noch?'); });
+    if (!res) return;
+    store.del(dk);
+    location.hash = '#/attempt/' + encodeURIComponent(res.id);
+  };
+  $app.onclick = e => {
+    const t = e.target;
+    if (t.dataset.jump) document.getElementById('q-' + t.dataset.jump).scrollIntoView({behavior: 'smooth', block: 'start'});
+    else if (t.id === 'submit' || t.id === 'submit2') submit();
+    else if (t.id === 'cancel') { if (confirm('Versuch abbrechen? Die bisherigen Antworten werden verworfen.\n(Zum Pausieren einfach zur Übersicht wechseln – der Versuch bleibt gespeichert.)')) { store.del(dk); location.hash = '#/'; } }
+  };
+}
+
+function questionHtml(q, i, dr, training = false) {
+  const a = dr.answers[q.key];
+  let body = '';
+  if (q.type === 'single' || q.type === 'multi') {
+    const multi = q.type === 'multi';
+    body = `<div class="hint">${multi ? `Wählen Sie <b>${q.select}</b> Antworten. <span id="cnt-${i}">(${(a || []).length} gewählt)</span>` : 'Wählen Sie <b>eine</b> Antwort.'}</div>` +
+      dr.order[q.key].map((oi, j) => `<label class="opt"><input type="${multi ? 'checkbox' : 'radio'}" name="q${i}" data-key="${esc(q.key)}" data-i="${i}" value="${oi}" ${(multi ? (a || []).includes(oi) : a === oi) ? 'checked' : ''}><span class="letter">${LETTERS[j]}</span><span>${fmt(q.options[oi])}</span></label>`).join('');
+  } else if (q.type === 'short') {
+    body = `<div class="hint">Kurzantwort</div><input class="short" type="text" data-key="${esc(q.key)}" value="${esc(a || '')}" placeholder="${esc(q.placeholder || 'Antwort eintragen')}" autocomplete="off" autocapitalize="off" spellcheck="false">`;
+  } else {
+    body = `<div class="hint">Freitext</div><textarea data-key="${esc(q.key)}" placeholder="Antwort in eigenen Worten …">${esc(a || '')}</textarea>`;
+  }
+  return `<article class="card q" id="q-${i}">
+    <header><span class="qnum">Frage ${i + 1}</span><span class="muted small">${pts(q.points)}</span>
+      ${training ? `<span class="muted small" style="margin-left:auto">${esc(q.topic)}</span>` : `<label class="flagbox"><input type="checkbox" data-flag="${esc(q.key)}" ${dr.flagged[q.key] ? 'checked' : ''}> markieren</label>`}</header>
+    <div class="qtext">${fmt(q.text)}</div>${q.code ? `<pre>${esc(q.code)}</pre>` : ''}${body}</article>`;
+}
+
+// ------------------------------------------------------------ Auswertung
+const STATUS = {correct: ['richtig', 'ok'], wrong: ['falsch', 'bad'], partial: ['teilweise', 'warn'], pending: ['zu bewerten', 'warn'], unanswered: ['nicht beantwortet', 'bad']};
+let attemptFilter = 'all';
+
+async function viewAttempt(id) {
+  const a = await api('/api/attempts/' + encodeURIComponent(id));
+  renderAttempt(a);
+}
+
+function renderAttempt(a) {
+  const res = Object.values(a.results);
+  const cnt = s => res.filter(r => r.status === s).length;
+  const wrong = cnt('wrong') + cnt('unanswered') + cnt('partial');
+  const training = a.examId === '_training';
+  const cls = a.pending ? 'warn' : training ? barCls(a.percent) : a.passed ? 'ok' : 'bad';
+  const show = a.questions.map((q, i) => [q, i]).filter(([q]) => {
+    const s = a.results[q.key].status;
+    return attemptFilter === 'all' || (attemptFilter === 'wrong' && ['wrong', 'unanswered', 'partial'].includes(s)) || (attemptFilter === 'pending' && s === 'pending') || (attemptFilter === 'flagged' && (a.flagged || []).includes(q.key));
+  });
+  const virtual = a.examId.startsWith('_');
+  $app.innerHTML = header('') + `
+  <section class="card">
+    <div class="row" style="padding:0 0 10px"><h2 style="margin:0">${esc(a.title)}</h2><span class="muted small">abgegeben ${fdate(a.submittedAt)}</span></div>
+    <div class="score ${cls}">
+      <div class="big">${pct(a.percent)}</div>
+      <div>${num(a.score)} von ${num(a.maxScore)} Punkten<br>
+        ${a.pending ? `<span class="pill warn">vorläufig – ${a.pending} Freitext${a.pending == 1 ? '' : 'e'} noch selbst bewerten</span>` : training ? '<span class="pill">Training</span>' : a.passed ? '<span class="pill ok">bestanden</span>' : '<span class="pill bad">nicht bestanden</span>'}
+        ${training ? '' : `<span class="muted small">(Grenze ${a.passPercent} %)</span>`}</div>
+      <div class="small muted">✔ ${cnt('correct')} richtig · ✘ ${wrong} falsch/teilweise/leer<br>Zeit: ${a.elapsedSec != null ? mmss(a.elapsedSec) : '–'}${a.durationMinutes ? ` von ${a.durationMinutes} min` : ''}</div>
+    </div>
+    <div class="qnav">${a.questions.map((q, i) => `<button class="${STATUS[a.results[q.key].status][1]}" data-jump="${i}" title="${STATUS[a.results[q.key].status][0]}">${i + 1}</button>`).join('')}</div>
+    ${a.review && a.review.overall ? `<div class="review"><b>Feedback von Claude:</b><br>${fmt(a.review.overall)}</div>` : ''}
+    <div class="row" style="padding-top:12px">
+      <div class="filters" style="margin:0">
+        ${[['all', 'Alle'], ['wrong', 'Falsch'], ['pending', 'Zu bewerten'], ['flagged', 'Markiert']].map(([k, l]) => `<button class="btn sm ${attemptFilter === k ? 'on' : ''}" data-filter="${k}">${l}</button>`).join('')}
+      </div>
+      <div>${wrong ? `<a class="btn" href="#/training?new=1&n=0&source=wrong">Falsche üben</a> ` : ''}${virtual ? '' : `<a class="btn" href="#/exam/${encodeURIComponent(a.examId)}?new=1">Nochmal</a> `}<a class="btn" href="#/">Übersicht</a></div>
+    </div>
+  </section>
+  ${show.length ? show.map(([q, i]) => resultHtml(q, i, a)).join('') : '<p class="muted">Keine Fragen in diesem Filter.</p>'}`;
+
+  $app.onclick = async e => {
+    const t = e.target.closest('[data-jump],[data-filter],[data-grade]');
+    if (!t) return;
+    if (t.dataset.filter) { attemptFilter = t.dataset.filter; renderAttempt(a); }
+    else if (t.dataset.jump) {
+      if (attemptFilter !== 'all') { attemptFilter = 'all'; renderAttempt(a); }
+      document.getElementById('q-' + t.dataset.jump)?.scrollIntoView({behavior: 'smooth', block: 'start'});
+    } else {
+      const y = window.scrollY;
+      try {
+        const upd = await api(`/api/attempts/${encodeURIComponent(a.id)}/grade`, {method: 'POST', body: {key: t.dataset.grade, points: t.dataset.pts === '' ? null : +t.dataset.pts}});
+        renderAttempt(upd); window.scrollTo(0, y);
+      } catch (err) { alert(err.message); }
+    }
+  };
+}
+
+function resultHtml(q, i, a) {
+  const r = a.results[q.key], ans = a.answers[q.key];
+  const [label, cls] = STATUS[r.status];
+  let body = '';
+  if (q.type === 'single' || q.type === 'multi') {
+    const multi = q.type === 'multi';
+    body = q.options.map((o, oi) => {
+      const chosen = multi ? (ans || []).includes(oi) : ans === oi;
+      const corr = q.correct.includes(oi);
+      const c = corr ? 'ok' : chosen ? 'bad' : '';
+      const mark = chosen ? (multi ? '☑' : '◉') : (multi ? '☐' : '○');
+      const tag = corr ? (chosen ? '✔ richtig gewählt' : '✔ richtig') : chosen ? '✘ falsch gewählt' : '';
+      return `<div class="ropt ${c} ${chosen ? 'chosen' : ''}"><span class="mark">${mark}</span><span class="letter">${LETTERS[oi]}</span><span>${fmt(o)}</span>${tag ? `<span class="tag">${tag}</span>` : ''}</div>`;
+    }).join('');
+  } else if (q.type === 'short') {
+    body = `<div class="lbl">Deine Antwort</div><div class="answer mono">${ans ? esc(ans) : '<span class="muted">—</span>'}</div>
+      <div class="lbl">Akzeptiert</div><div class="chips">${q.accept.map(x => x.startsWith('re:') ? `<span class="pill" title="regulärer Ausdruck">Muster: <code>${esc(x.slice(3))}</code></span>` : `<code>${esc(x)}</code>`).join(' ')}</div>
+      ${r.status === 'wrong' || r.gradedBy ? `<div class="grade"><span class="small muted">Deine Antwort ist auch richtig?</span>
+        ${r.gradedBy ? `<button class="btn sm" data-grade="${esc(q.key)}" data-pts="">Automatische Bewertung wiederherstellen</button>` : `<button class="btn sm" data-grade="${esc(q.key)}" data-pts="${r.max}">Als richtig werten</button>`}</div>` : ''}`;
+  } else {
+    const low = String(ans || '').toLowerCase();
+    const kws = (q.keywords || []).map(k => ({k, hit: k.split('|').some(alt => low.includes(alt.trim().toLowerCase()))}));
+    const step = r.max > 4 ? 1 : 0.5;
+    const steps = []; for (let p = 0; p <= r.max + 1e-9; p += step) steps.push(Math.round(p * 10) / 10);
+    body = `<div class="lbl">Deine Antwort</div><div class="answer">${ans ? esc(ans) : '<span class="muted">—</span>'}</div>
+      <div class="lbl">Musterantwort</div><div class="model">${fmt(q.modelAnswer)}</div>
+      ${kws.length ? `<div class="lbl">Stichworte, die vorkommen sollten</div><div class="chips">${kws.map(x => `<span class="pill ${x.hit ? 'ok' : ''}">${x.hit ? '✔' : '○'} ${esc(x.k.replace(/\|/g, ' / '))}</span>`).join('')}</div>` : ''}
+      ${ans ? `<div class="grade"><span class="small"><b>Selbstbewertung:</b></span>
+        ${steps.map(p => `<button class="btn sm ${r.points === p ? 'on' : ''}" data-grade="${esc(q.key)}" data-pts="${p}">${num(p)}</button>`).join('')}
+        <span class="small muted">von ${num(r.max)}</span>
+        ${r.points != null ? `<button class="btn sm" data-grade="${esc(q.key)}" data-pts="">zurücksetzen</button>` : ''}</div>` : ''}`;
+  }
+  const note = a.review && a.review.questions && a.review.questions[q.key];
+  return `<article class="card q ${cls}" id="q-${i}">
+    <header><span class="qnum">Frage ${i + 1}</span><span class="pill ${cls}">${label}</span>
+      <span class="muted small">${r.points == null ? '?' : num(r.points)} / ${pts(r.max)}</span>
+      <span class="muted small" style="margin-left:auto">${esc(q.topic)}${(a.flagged || []).includes(q.key) ? ' · <span style="color:var(--flag)">markiert</span>' : ''}</span></header>
+    <div class="qtext">${fmt(q.text)}</div>${q.code ? `<pre>${esc(q.code)}</pre>` : ''}
+    ${q.type === 'multi' ? `<div class="hint">${q.correct.length} richtige Antworten</div>` : ''}
+    ${body}
+    ${q.explanation ? `<div class="expl"><b>Erklärung:</b> ${fmt(q.explanation)}</div>` : ''}
+    ${note ? `<div class="review"><b>Claude:</b> ${fmt(note)}</div>` : ''}
+  </article>`;
+}
+
+// ------------------------------------------------------------ Freies Training
+// Zustand in localStorage, damit ein Neuladen das Training nicht abbricht.
+// Jede geprüfte Antwort wird sofort serverseitig im Trainings-Versuch gespeichert.
+async function viewTraining(q) {
+  let st = store.get('lpic-training');
+  if (q.new || !st) {
+    st = {n: +q.n || 0, topic: q.topic || '', source: q.source || 'all', sessionId: null, asked: [], answered: 0, current: null, answer: null};
+    history.replaceState(null, '', '#/training');
+  }
+  let attempt = st.sessionId ? await api('/api/attempts/' + encodeURIComponent(st.sessionId)).catch(() => null) : null;
+  const save = () => store.set('lpic-training', st);
+  const finished = () => st.n && st.answered >= st.n;
+  const SRC = {all: 'alle Fragen', wrong: 'zuletzt falsch', new: 'noch nie beantwortet'};
+
+  const head = () => {
+    const res = attempt ? Object.values(attempt.results) : [];
+    const right = res.filter(r => r.status === 'correct').length;
+    return `<div class="examhead"><div class="row">
+      <div><b>Training</b>${st.topic ? ' · ' + esc(st.topic) : ''} <span class="muted small">· ${SRC[st.source]}</span><br>
+        <span class="muted small">${st.n ? `Frage ${Math.min(st.answered + (st.current && !isReview() ? 1 : 0), st.n)} von ${st.n}` : `${st.answered} beantwortet`}${res.length ? ` · ${right}/${res.length} richtig` : ''}</span></div>
+      <div><button class="btn" id="stop">Beenden</button></div></div></div>`;
+  };
+  const isReview = () => attempt && st.current && attempt.results[st.current.question.key] && st.reviewing;
+
+  async function next() {
+    if (finished()) return renderEnd();
+    const r = await api('/api/training/next', {method: 'POST', body: {topic: st.topic, source: st.source, exclude: st.asked}});
+    if (r.done) { st.current = null; save(); return renderEnd(true); }
+    const qq = r.question;
+    const idx = (qq.options || []).map((_, i) => i);
+    st.current = {question: qq, order: store.get('lpic-opt:shuffle') ? shuffled(idx) : idx};
+    st.answer = null; st.reviewing = false;
+    st.asked.push(qq.key); save();
+    renderAsk();
+  }
+
+  function renderAsk() {
+    const qq = st.current.question;
+    const dr = {answers: {[qq.key]: st.answer}, flagged: {}, order: {[qq.key]: st.current.order}};
+    $app.innerHTML = head() + questionHtml(qq, st.answered, dr, true) + `
+      <div class="row"><span class="muted small">Tastatur: ${qq.options ? 'A–' + LETTERS[qq.options.length - 1] + ' wählen, ' : ''}Enter prüfen</span>
+        <div><button class="btn" id="skip">Überspringen</button> <button class="btn primary" id="check">Prüfen</button></div></div>
+      <p class="errors" id="msg" style="display:none">Bitte zuerst antworten – oder überspringen.</p>`;
+    const inp = $app.querySelector('input.short, textarea');
+    if (inp) inp.focus();
+  }
+
+  function renderReview() {
+    const qq = attempt.questions.find(x => x.key === st.current.question.key);
+    const last = finished();
+    $app.innerHTML = head() + resultHtml(qq, st.answered - 1, attempt) + `
+      <div class="row"><span class="muted small">Enter: ${last ? 'Ergebnis' : 'nächste Frage'}</span>
+        <div><button class="btn primary" id="next">${last ? 'Ergebnis anzeigen' : 'Nächste Frage'}</button></div></div>`;
+  }
+
+  function renderEnd(exhausted) {
+    const res = attempt ? Object.values(attempt.results) : [];
+    const right = res.filter(r => r.status === 'correct').length;
+    store.del('lpic-training');
+    const again = '#/training?' + new URLSearchParams({new: 1, n: st.n, topic: st.topic, source: st.source});
+    $app.innerHTML = header('') + `<section class="card"><h2>Training beendet</h2>
+      ${exhausted ? `<p class="muted">Keine ${st.answered ? 'weiteren ' : ''}passenden Fragen mehr vorhanden (${SRC[st.source]}${st.topic ? ', ' + esc(st.topic) : ''}).</p>` : ''}
+      ${res.length ? `<div class="score ${barCls(attempt.percent)}"><div class="big">${right}/${res.length}</div><div>richtig beantwortet<br><span class="muted small">${num(attempt.score)} von ${num(attempt.maxScore)} Punkten${attempt.pending ? ` · ${attempt.pending} Freitext offen` : ''}</span></div></div>` : ''}
+      <div class="row" style="margin-top:12px"><div>${res.length ? `<a class="btn" href="#/attempt/${encodeURIComponent(attempt.id)}">Alle Antworten ansehen</a>` : ''}</div>
+        <div><a class="btn" href="#/">Übersicht</a> <a class="btn primary" href="${again}">Nochmal</a></div></div></section>`;
+    resetHandlers();
+  }
+
+  async function check() {
+    const qq = st.current.question;
+    if (!isAnswered(qq, st.answer)) { document.getElementById('msg').style.display = ''; return; }
+    attempt = await api('/api/training/answer', {method: 'POST', body: {sessionId: st.sessionId, key: qq.key, answer: st.answer, topic: st.topic}});
+    st.sessionId = attempt.id; st.answered++; st.reviewing = true; save();
+    renderReview();
+  }
+
+  $app.oninput = $app.onchange = e => {
+    const el = e.target, k = el.dataset.key;
+    if (!k) return;
+    if (el.type === 'radio') st.answer = +el.value;
+    else if (el.type === 'checkbox') {
+      const set = new Set(st.answer || []);
+      el.checked ? set.add(+el.value) : set.delete(+el.value);
+      st.answer = [...set].sort((a, b) => a - b);
+      const c = document.getElementById('cnt-' + el.dataset.i);
+      if (c) c.textContent = `(${set.size} gewählt)`;
+    } else st.answer = el.value;
+    document.getElementById('msg').style.display = 'none';
+    save();
+  };
+  $app.onclick = async e => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    if (t.id === 'check') check();
+    else if (t.id === 'next') next();
+    else if (t.id === 'skip') next();
+    else if (t.id === 'stop') {
+      if (st.sessionId) { store.del('lpic-training'); location.hash = '#/attempt/' + encodeURIComponent(st.sessionId); }
+      else { store.del('lpic-training'); location.hash = '#/'; }
+    } else if (t.dataset.grade) {
+      attempt = await api(`/api/attempts/${encodeURIComponent(attempt.id)}/grade`, {method: 'POST', body: {key: t.dataset.grade, points: t.dataset.pts === '' ? null : +t.dataset.pts}});
+      renderReview();
+    }
+  };
+  document.onkeydown = e => {
+    if (e.metaKey || e.altKey) return;
+    const inText = e.target.tagName === 'TEXTAREA' || (e.target.tagName === 'INPUT' && e.target.type === 'text');
+    if (e.key === 'Enter' && (!inText || e.target.tagName === 'INPUT' || e.ctrlKey)) {
+      const b = document.getElementById('check') || document.getElementById('next');
+      if (b) { e.preventDefault(); b.click(); }
+      return;
+    }
+    if (inText || e.ctrlKey || !st.current || !document.getElementById('check')) return;
+    const j = LETTERS.indexOf(e.key.toUpperCase());
+    const opts = $app.querySelectorAll('.opt input');
+    if (j >= 0 && j < opts.length) { opts[j].click(); }
+  };
+
+  if (st.current && attempt && st.reviewing && attempt.results[st.current.question.key]) renderReview();
+  else if (st.current && !st.reviewing) renderAsk();
+  else await next();
+}
+
+// ------------------------------------------------------------ Statistik
+async function viewStats() {
+  const s = await api('/api/stats');
+  const done = s.attempts.filter(a => !a.pending && a.examId !== '_training');
+  const avg = done.length ? done.reduce((x, a) => x + a.percent, 0) / done.length : null;
+  $app.innerHTML = header('stats') + `
+  <section class="card"><h2>Überblick</h2>
+    <div class="score"><div><div class="big">${s.attempts.length}</div><span class="muted small">Versuche (inkl. Training)</span></div>
+    <div><div class="big">${pct(avg)}</div><span class="muted small">Ø Prüfungen (fertig bewertet)</span></div>
+    <div><div class="big">${done.filter(a => a.passed).length}</div><span class="muted small">Prüfungen bestanden</span></div></div>
+  </section>
+  <section class="card"><h2>Themen <span class="muted small">(schwächste zuerst)</span></h2>
+    ${s.topics.length ? `<div class="tablewrap"><table><thead><tr><th>Thema</th><th class="num">im Pool</th><th class="num">beantwortet</th><th style="width:30%">Quote</th><th></th></tr></thead><tbody>
+    ${s.topics.map(t => `<tr><td>${esc(t.topic)}</td><td class="num">${t.pool}</td><td class="num">${t.answered}</td>
+      <td><div style="display:flex;gap:8px;align-items:center">${bar(t.percent)}<span class="small" style="white-space:nowrap">${pct(t.percent)}</span></div></td>
+      <td class="num">${t.pool ? `<a class="btn sm" href="#/training?${new URLSearchParams({new: 1, n: 10, topic: t.topic, source: 'all'})}">üben</a>` : ''}</td></tr>`).join('')}
+    </tbody></table></div>` : '<p class="muted">Noch keine Daten.</p>'}
+  </section>
+  <section class="card"><h2>Alle Versuche</h2>${s.attempts.length ? attemptsTable(s.attempts, true) : '<p class="muted">Noch keine Versuche.</p>'}</section>`;
+
+  $app.onclick = async e => {
+    const t = e.target.closest('[data-del]');
+    if (!t || !confirm('Diesen Versuch endgültig löschen?')) return;
+    await api('/api/attempts/' + encodeURIComponent(t.dataset.del), {method: 'DELETE'}).catch(err => alert(err.message));
+    route();
+  };
+}
+
+route();
+</script>
+</body>
+</html>
